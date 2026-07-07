@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useScroll, useTransform, motion } from 'framer-motion';
 
+// Unique source images for preloading
+const UNIQUE_FRAMES = ['/11.png', '/22.png', '/33.png', '/44.png', '/55.png'];
 // Ping-pong frame sequence: 1→2→3→4→5→4→3→2→(repeat)
 const FRAMES = ['/11.png', '/22.png', '/33.png', '/44.png', '/55.png', '/44.png', '/33.png', '/22.png'];
 const FRAME_INTERVAL = 120; // ms per frame
@@ -9,14 +11,31 @@ export default function FlyingParrot() {
   const { scrollYProgress } = useScroll();
   const [frameIndex, setFrameIndex] = useState(0);
   const [scaleXVal, setScaleXVal] = useState(-1); // -1 = face left, 1 = face right
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload all frame images before starting animation
+  useEffect(() => {
+    let loadedCount = 0;
+    UNIQUE_FRAMES.forEach((src) => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loadedCount++;
+        if (loadedCount >= UNIQUE_FRAMES.length) {
+          setImagesLoaded(true);
+        }
+      };
+      img.src = src;
+    });
+  }, []);
 
   // Cycle through frames continuously for wing-flap animation
   useEffect(() => {
+    if (!imagesLoaded) return;
     const timer = setInterval(() => {
       setFrameIndex((prev) => (prev + 1) % FRAMES.length);
     }, FRAME_INTERVAL);
     return () => clearInterval(timer);
-  }, []);
+  }, [imagesLoaded]);
 
   // Track scroll direction and update face direction accordingly
   useEffect(() => {
@@ -77,7 +96,8 @@ export default function FlyingParrot() {
         scaleX: scaleXVal,
         zIndex: 50,
         width: '160px',
-        transition: 'scale 0.15s ease', // smooth flip
+        opacity: imagesLoaded ? 1 : 0,
+        transition: 'scale 0.15s ease, opacity 0.5s ease',
       }}
     >
       <img
