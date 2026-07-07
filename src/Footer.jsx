@@ -93,7 +93,7 @@ export default function Footer() {
           className="font-serif-wedding text-4xl md:text-5xl mb-2"
           style={{ color: '#FBF7EE', fontWeight: 400 }}
         >
-          Aarav <span style={{ color: '#C9A96E' }}>&amp;</span> Diya
+          Ananya <span style={{ color: '#C9A96E' }}>&amp;</span> Arjun
         </motion.h2>
 
         <motion.div
@@ -123,7 +123,7 @@ export default function Footer() {
           "Thank you for being part of our journey. Your presence at our wedding means the world to us.
           We look forward to celebrating this beautiful beginning with the ones we love most."
           <br /><br />
-          — With all our love, Aarav &amp; Diya 💛
+          — With all our love, Ananya &amp; Arjun 💛
         </motion.p>
 
         {/* Social Icons */}
@@ -208,7 +208,7 @@ export default function Footer() {
           className="text-xs"
           style={{ color: 'rgba(201,169,110,0.3)', fontFamily: 'Montserrat, sans-serif' }}
         >
-          © 2027 Aarav &amp; Diya Wedding. Made with 💛 &amp; a lot of love.
+          © 2027 Ananya &amp; Arjun Wedding. Made with 💛 &amp; a lot of love.
         </motion.p>
       </div>
     </footer>

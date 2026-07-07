@@ -19,7 +19,7 @@ const WELCOME_DETAILS = {
     recipient: 'Dearest Family & Friends',
     subject: 'Welcome to Our Wedding!',
     message: "Thank you for joining us to celebrate this beautiful beginning. Your love, presence, and blessings mean the absolute world to us. Let's make wonderful memories together!",
-    sender: 'With love, Aarav & Diya'
+    sender: 'With love, Ananya & Arjun'
 };
 
 export default function EnvelopeSystem({ onComplete }) {
