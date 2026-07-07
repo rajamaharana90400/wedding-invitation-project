@@ -4,11 +4,11 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 // Placeholder couple photos using picsum.photos (unique seeds for wedding aesthetic)
 const PHOTOS = [
   { id: 1, src: 'gallery1.jpg', alt: 'Together', span: 'row-span-2' },
-  { id: 2, src: 'https://picsum.photos/seed/wed2/600/400', alt: 'Happy moments', span: '' },
-  { id: 3, src: 'https://picsum.photos/seed/wed3/600/400', alt: 'Our story', span: '' },
-  { id: 4, src: 'https://picsum.photos/seed/wed4/600/800', alt: 'The proposal', span: 'row-span-2' },
-  { id: 5, src: 'https://picsum.photos/seed/wed5/600/400', alt: 'Engagement', span: '' },
-  { id: 6, src: 'https://picsum.photos/seed/wed6/600/400', alt: 'Love story', span: '' },
+  { id: 2, src: 'happymoment.jpg', alt: 'Happy moments', span: '' },
+  { id: 3, src: 'engagement.jpg', alt: 'Our story', span: '' },
+  { id: 4, src: 'love story.jpg', alt: 'The proposal', span: 'row-span-2' },
+  { id: 5, src: 'proposal.jpg', alt: 'Engagement', span: '' },
+  { id: 6, src: 'sindur.jpg', alt: 'Love story', span: '' },
   { id: 7, src: 'https://picsum.photos/seed/wed7/600/400', alt: 'Golden hour', span: '' },
   { id: 8, src: 'https://picsum.photos/seed/wed8/600/400', alt: 'Forever', span: '' },
 ];
