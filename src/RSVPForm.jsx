@@ -1,10 +1,13 @@
 import { useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 
+// ⚠️ PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzC3UBj8vPlyAclYoUv6pzoDA-I9SXXjcgqpnb3XqNVdirP7rpXFcJr4HHOhv4ubqXiRQ/exec';
+
 const initialForm = {
   name: '',
   email: '',
-  phone: '',
+  phone: '',  
   guests: '1',
   attending: 'yes',
   message: '',
@@ -122,15 +125,41 @@ function SuccessAnimation() {
 export default function RSVPForm() {
   const [form, setForm] = useState(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   const handleChange = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate submission
-    setTimeout(() => setSubmitted(true), 400);
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const res = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          guests: form.guests,
+          attending: form.attending,
+          message: form.message,
+        }),
+      });
+
+      // Google Apps Script with no-cors returns opaque response,
+      // so we treat any non-error as success
+      setSubmitted(true);
+    } catch (err) {
+      setError('Something went wrong. Please check your connection and try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -301,22 +330,47 @@ export default function RSVPForm() {
                 onChange={handleChange('message')}
               />
 
+              {/* Error message */}
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="text-center text-sm py-3 px-4 rounded-xl"
+                    style={{
+                      background: 'rgba(220, 60, 60, 0.15)',
+                      border: '1px solid rgba(220, 60, 60, 0.3)',
+                      color: '#f5a5a5',
+                      fontFamily: 'Montserrat, sans-serif',
+                    }}
+                  >
+                    ⚠️ {error}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
+                disabled={submitting}
+                whileHover={submitting ? {} : { scale: 1.03, y: -2 }}
+                whileTap={submitting ? {} : { scale: 0.97 }}
                 className="magnetic-btn ripple-btn w-full py-4 rounded-2xl text-sm font-medium tracking-wide mt-2"
                 style={{
-                  background: 'linear-gradient(135deg, #C9A96E, #9A7A40)',
+                  background: submitting
+                    ? 'linear-gradient(135deg, #8a7a5a, #6a5a3a)'
+                    : 'linear-gradient(135deg, #C9A96E, #9A7A40)',
                   color: '#FBF7EE',
                   fontFamily: 'Montserrat, sans-serif',
                   boxShadow: '0 8px 24px rgba(201,169,110,0.3)',
                   border: 'none',
-                  cursor: 'pointer',
+                  cursor: submitting ? 'not-allowed' : 'pointer',
                   letterSpacing: '0.1em',
+                  opacity: submitting ? 0.7 : 1,
+                  transition: 'all 0.3s ease',
                 }}
               >
-                ✉️ &nbsp; Send RSVP
+                {submitting ? '⏳  Sending...' : '✉️ \u00a0 Send RSVP'}
               </motion.button>
             </motion.form>
           )}
