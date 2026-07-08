@@ -9,8 +9,10 @@ const PHOTOS = [
   { id: 4, src: 'love story.jpg', alt: 'The proposal', span: 'row-span-2' },
   { id: 5, src: 'proposal.jpg', alt: 'Engagement', span: '' },
   { id: 6, src: 'sindur.jpg', alt: 'Love story', span: '' },
-  { id: 7, src: 'https://picsum.photos/seed/wed7/600/400', alt: 'Golden hour', span: '' },
+  { id: 7, src: 'celebration.jpg', alt: 'Golden hour', span: '' },
   { id: 8, src: 'https://picsum.photos/seed/wed8/600/400', alt: 'Forever', span: '' },
+  { id: 9, src: 'celebration.jpg', alt: 'Celebration', span: '' },
+  { id: 10, src: 'https://picsum.photos/seed/wed10/600/400', alt: 'Together Forever', span: '' },
 ];
 
 function Lightbox({ photo, onClose }) {
@@ -175,7 +177,7 @@ export default function CoupleGallery() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="font-serif-wedding text-4xl md:text-6xl mb-4"
-          style={{ color: '#FBF7EE', fontWeight: 400 }}
+          style={{ color: '#8B1A30', fontWeight: 400 }}
         >
           Our Gallery
         </motion.h2>
@@ -189,8 +191,8 @@ export default function CoupleGallery() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-5 text-sm max-w-md mx-auto"
-          style={{ color: 'rgba(251,247,238,0.5)', fontFamily: 'Montserrat, sans-serif' }}
+          className="mt-5 text-[1.05rem] md:text-[1.2rem] max-w-md mx-auto"
+          style={{ color: '#3E1620', fontFamily: 'Montserrat, sans-serif' }}
         >
           A collection of cherished moments, frozen in time — each one a chapter of our love story.
         </motion.p>

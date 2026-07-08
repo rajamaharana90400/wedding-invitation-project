@@ -5,20 +5,20 @@
   --gold:       #C9A96E;
   --gold-light: #E8D5A3;
   --gold-dark:  #9A7A40;
-  --ivory:      #FBF7EE;
-  --cream:      #F5EDD8;
+  --ivory:      #FFF5F6;
+  --cream:      #FCE9EC;
   --blush:      #F2C4CE;
   --blush-dark: #E8A0B0;
   --rose:       #8B1A30;
   --rose-light: #C94060;
   --champagne:  #F7E7C6;
   --petal:      #FADADD;
-  --bg-dark:    #3E1620;
-  --bg-mid:     #5C2030;
+  --bg-dark:    #FFF0F2;
+  --bg-mid:     #FBDCE2;
 
   font-family: 'Montserrat', sans-serif;
   color: #2E2620;
-  background-color: #3E1620;
+  background-color: var(--bg-dark);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -33,8 +33,143 @@ html, body, #root {
 
 body {
   min-width: 320px;
-  background: #3E1620;
+  background: var(--bg-dark);
   overflow-x: hidden;
+}
+
+/* ─── Video Intro Overlay ────────────────────────────────── */
+.video-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-dark);
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+/* Curtain-only layer with blend mode applied to container (GPU-safe) */
+.video-intro-curtain-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: transparent;
+}
+
+.video-intro-curtain-wrap.blend-active {
+  mix-blend-mode: multiply;
+}
+
+.video-intro-player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Tap to Open Prompt */
+.video-intro-prompt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  animation: promptEntranceAndPulse 3.5s ease-in-out infinite;
+  text-align: center;
+  width: 90%;
+}
+
+@keyframes promptEntranceAndPulse {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  40% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  55% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+  75% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+  100% { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ── Couple image revealed behind curtains ── */
+.video-intro-couple {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.video-intro-couple-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  animation: coupleReveal 1.2s ease-out 0.3s both;
+}
+
+.video-intro-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 50%, transparent 30%, rgba(62,22,32,0.55) 100%),
+    linear-gradient(to bottom, rgba(62,22,32,0.6) 0%, transparent 25%, transparent 75%, rgba(62,22,32,0.7) 100%);
+  pointer-events: none;
+}
+
+.video-intro-names {
+  position: absolute;
+  bottom: 14%;
+  right: 8%;
+  left: auto;
+  text-align: right;
+  z-index: 3;
+  animation: fadeInUp 1s ease 1.2s both;
+}
+
+@media (max-width: 640px) {
+  .video-intro-names {
+    right: 6%;
+    bottom: 10%;
+  }
+  .video-intro-names-text {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+  }
+  .video-intro-names-sub {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+  }
+}
+
+.video-intro-names-text {
+  font-family: 'Cormorant Garamond', 'EB Garamond', serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 500;
+  color: #FBF7EE;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.7), 0 0 40px rgba(201,169,110,0.4);
+  white-space: nowrap;
+}
+
+.video-intro-names-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.7rem, 1.8vw, 1rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #E8D5A3;
+  margin-top: 8px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+
+@keyframes coupleReveal {
+  from { opacity: 0; transform: scale(1.06); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 /* ─── Typography ────────────────────────────────────────── */
@@ -202,6 +337,38 @@ body {
 .float-label-group textarea:not(:placeholder-shown) ~ label {
   top: 6px;
   font-size: 0.7rem;
+}
+
+/* ─── RSVP Form Dark Theme Overrides ─── */
+#rsvp .float-label-group input,
+#rsvp .float-label-group textarea,
+#rsvp .float-label-group select {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(139, 26, 48, 0.3);
+  color: #3E1620; /* Dark text */
+  font-weight: 500;
+}
+
+#rsvp .float-label-group label {
+  color: #8B1A30; /* Dark burgundy labels */
+  font-weight: 500;
+}
+
+#rsvp .float-label-group input:focus ~ label,
+#rsvp .float-label-group input:not(:placeholder-shown) ~ label,
+#rsvp .float-label-group textarea:focus ~ label,
+#rsvp .float-label-group textarea:not(:placeholder-shown) ~ label,
+#rsvp .float-label-group select:focus ~ label,
+#rsvp .float-label-group select:not([value=""]):valid ~ label {
+  color: #3E1620; /* Darker when focused */
+  font-weight: 600;
+}
+
+#rsvp .float-label-group input:focus,
+#rsvp .float-label-group textarea:focus,
+#rsvp .float-label-group select:focus {
+  border-color: #8B1A30;
+  box-shadow: 0 0 0 3px rgba(139, 26, 48, 0.1);
 }
 
 /* ─── Keyframes ──────────────────────────────────────────── */

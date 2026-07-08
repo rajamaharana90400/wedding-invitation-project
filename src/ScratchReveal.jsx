@@ -362,8 +362,8 @@ export default function ScratchReveal() {
       <p
         style={{
           fontFamily: 'Montserrat, sans-serif',
-          fontSize: '0.85rem',
-          color: 'rgba(155,17,30,0.6)',
+          fontSize: 'clamp(0.95rem, 3vw, 1.15rem)',
+          color: 'rgba(155,17,30,0.85)',
           marginBottom: 48,
           letterSpacing: '0.05em',
         }}

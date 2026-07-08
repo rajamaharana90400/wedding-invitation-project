@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const events = [
@@ -39,25 +39,25 @@ const events = [
   },
 ];
 
-function TimelineCard({ event, index }) {
+function TimelineCard({ event, index, dotRef }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true, margin: '-160px' });
   const isLeft = event.side === 'left';
 
   return (
     <div
       ref={ref}
-      className={`relative flex w-full items-start gap-4 mb-12 ${
-        isLeft ? 'flex-row' : 'flex-row-reverse'
-      } md:gap-8`}
+      className="relative grid grid-cols-[48px_1fr] md:grid-cols-[1fr_48px_1fr] gap-4 md:gap-8 mb-12 items-center w-full"
     >
       {/* Card */}
       <motion.div
-        initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
+        initial={{ opacity: 0, x: isLeft ? -80 : 80 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.7, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="flex-1 glass rounded-2xl p-6 md:p-8 premium-shadow relative overflow-hidden"
-        style={{ maxWidth: '420px' }}
+        transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className={`glass rounded-2xl p-6 md:p-8 premium-shadow relative overflow-hidden col-start-2 ${
+          isLeft ? 'md:col-start-1' : 'md:col-start-3'
+        }`}
+        style={{ justifySelf: 'stretch' }}
       >
         {/* Glow bg */}
         <div
@@ -68,11 +68,10 @@ function TimelineCard({ event, index }) {
         />
 
         <div className="flex items-center gap-3 mb-3">
-          <span className="text-2xl">{event.icon}</span>
           <div>
-            <div className="section-label text-xs mb-0.5">{event.year}</div>
+            <div className="section-label text-xs mb-0.5" style={{ color: '#C9A96E' }}>{event.year}</div>
             <h3
-              className="font-serif-wedding text-xl md:text-2xl text-white"
+              className="font-serif-wedding text-xl md:text-2xl text-[#8B1A30]"
               style={{ fontWeight: 500 }}
             >
               {event.title}
@@ -80,7 +79,7 @@ function TimelineCard({ event, index }) {
           </div>
         </div>
 
-        <p className="text-sm md:text-base leading-relaxed" style={{ color: 'rgba(251,247,238,0.75)' }}>
+        <p className="text-[0.95rem] md:text-[1.1rem] leading-relaxed" style={{ color: 'rgba(92, 32, 48, 0.85)' }}>
           {event.desc}
         </p>
 
@@ -103,61 +102,95 @@ function TimelineCard({ event, index }) {
       </motion.div>
 
       {/* Centre dot on timeline */}
-      <div className="flex-shrink-0 flex flex-col items-center" style={{ width: '48px' }}>
+      <div
+        ref={dotRef}
+        className="col-start-1 md:col-start-2 flex justify-center items-center"
+        style={{ width: '48px', justifySelf: 'center', zIndex: 5 }}
+      >
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={inView ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
-          className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
           style={{
-            background: 'linear-gradient(135deg, #C9A96E, #E8D5A3)',
-            boxShadow: '0 0 20px rgba(201,169,110,0.5)',
+            background: 'linear-gradient(135deg, #C9A96E, #8B1A30)',
+            boxShadow: '0 0 15px rgba(139,26,48,0.3)',
           }}
         >
-          {event.icon}
+          {index + 1}
         </motion.div>
       </div>
-
-      {/* Spacer for opposite side */}
-      <div className="flex-1 hidden md:block" style={{ maxWidth: '420px' }} />
     </div>
   );
 }
 
-function AnimatedGoldLine({ visible }) {
+function FlowerVineLine({ top, height }) {
   return (
-    <svg
-      className="absolute left-1/2 top-0 -translate-x-1/2 pointer-events-none"
-      style={{ height: '100%', width: '4px', overflow: 'visible' }}
-      aria-hidden
+    <div
+      className="absolute left-[24px] md:left-1/2 -translate-x-1/2 w-[56px] overflow-hidden pointer-events-none"
+      style={{
+        zIndex: 1,
+        top: top || 0,
+        height: height || 0,
+      }}
     >
-      <defs>
-        <linearGradient id="goldLineGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#9A7A40" stopOpacity="0" />
-          <stop offset="20%" stopColor="#C9A96E" stopOpacity="1" />
-          <stop offset="80%" stopColor="#C9A96E" stopOpacity="1" />
-          <stop offset="100%" stopColor="#9A7A40" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <motion.line
-        x1="2"
-        y1="0"
-        x2="2"
-        y2="2000"
-        stroke="url(#goldLineGrad)"
-        strokeWidth="2"
-        strokeDasharray="2000"
-        strokeDashoffset="2000"
-        animate={visible ? { strokeDashoffset: 0 } : {}}
-        transition={{ duration: 2.5, ease: 'easeOut' }}
+      <div
+        style={{
+          height: '100%',
+          backgroundImage: 'url(/flowervine.png)',
+          backgroundSize: '56px auto',
+          backgroundRepeat: 'repeat-y',
+          width: '100%',
+          opacity: 0.95,
+        }}
       />
-    </svg>
+    </div>
   );
 }
 
 export default function LoveStory() {
   const sectionRef = useRef(null);
+  const timelineRef = useRef(null);
+  const dot1Ref = useRef(null);
+  const dot5Ref = useRef(null);
+  
+  const [lineCoords, setLineCoords] = useState({ top: 0, height: 0 });
   const titleInView = useInView(sectionRef, { once: true, margin: '-100px' });
+
+  useEffect(() => {
+    const updateLine = () => {
+      if (dot1Ref.current && dot5Ref.current && timelineRef.current) {
+        const dot1Rect = dot1Ref.current.getBoundingClientRect();
+        const dot5Rect = dot5Ref.current.getBoundingClientRect();
+        const timelineRect = timelineRef.current.getBoundingClientRect();
+
+        // Calculate center vertical position of dot 1 and dot 5
+        const top = dot1Rect.top + dot1Rect.height / 2 - timelineRect.top;
+        const bottom = dot5Rect.top + dot5Rect.height / 2 - timelineRect.top;
+        
+        setLineCoords({
+          top,
+          height: bottom - top
+        });
+      }
+    };
+
+    // Run layout update
+    updateLine();
+
+    // Event listeners for window resize/load
+    window.addEventListener('resize', updateLine);
+    window.addEventListener('load', updateLine);
+    
+    // Fallback interval to capture any late DOM shifts or lazy loading layouts
+    const interval = setInterval(updateLine, 400);
+
+    return () => {
+      window.removeEventListener('resize', updateLine);
+      window.removeEventListener('load', updateLine);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <section
@@ -189,7 +222,7 @@ export default function LoveStory() {
           animate={titleInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="font-serif-wedding text-4xl md:text-6xl mb-4"
-          style={{ color: '#FBF7EE', fontWeight: 400 }}
+          style={{ color: '#8B1A30', fontWeight: 400 }}
         >
           Our Love Story
         </motion.h2>
@@ -203,8 +236,8 @@ export default function LoveStory() {
           initial={{ opacity: 0 }}
           animate={titleInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-6 text-sm md:text-base max-w-lg mx-auto"
-          style={{ color: 'rgba(251,247,238,0.6)', fontFamily: 'Montserrat, sans-serif' }}
+          className="mt-6 text-[1.05rem] md:text-[1.2rem] max-w-lg mx-auto"
+          style={{ color: '#3E1620', fontFamily: 'Montserrat, sans-serif' }}
         >
           Every great love story has its chapters. Here is ours — written in the stars,
           sealed with a kiss, and forever in our hearts.
@@ -212,12 +245,18 @@ export default function LoveStory() {
       </div>
 
       {/* Timeline */}
-      <div className="relative max-w-3xl mx-auto">
-        <AnimatedGoldLine visible={titleInView} />
+      <div ref={timelineRef} className="relative max-w-3xl mx-auto">
+        <FlowerVineLine top={lineCoords.top} height={lineCoords.height} />
         {events.map((ev, i) => (
-          <TimelineCard key={ev.year} event={ev} index={i} />
+          <TimelineCard
+            key={ev.year}
+            event={ev}
+            index={i}
+            dotRef={i === 0 ? dot1Ref : i === events.length - 1 ? dot5Ref : null}
+          />
         ))}
       </div>
+
 
       {/* Floating decorative flowers */}
       {[0, 1, 2].map((i) => (

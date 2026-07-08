@@ -34,8 +34,8 @@ export default function Footer() {
       ref={ref}
       className="relative pt-20 pb-10 px-4 md:px-8 text-center overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, #2A0F1A 0%, #1A0510 100%)',
-        borderTop: '1px solid rgba(201,169,110,0.15)',
+        background: 'linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-dark) 100%)',
+        borderTop: '1px solid rgba(201,169,110,0.3)',
       }}
     >
       {/* Decorative florals */}
@@ -91,7 +91,7 @@ export default function Footer() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
           className="font-serif-wedding text-4xl md:text-5xl mb-2"
-          style={{ color: '#FBF7EE', fontWeight: 400 }}
+          style={{ color: '#8B1A30', fontWeight: 400 }}
         >
           Ananya <span style={{ color: '#C9A96E' }}>&amp;</span> Arjun
         </motion.h2>
@@ -117,8 +117,13 @@ export default function Footer() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.35 }}
-          className="text-sm md:text-base leading-relaxed mb-8 italic"
-          style={{ color: 'rgba(251,247,238,0.55)', fontFamily: 'Cormorant Garamond, serif' }}
+          className="leading-relaxed mb-8 italic"
+          style={{
+            color: '#3E1620',
+            fontFamily: 'Cormorant Garamond, serif',
+            fontSize: 'clamp(1.2rem, 3.8vw, 1.5rem)',
+            fontWeight: 500,
+          }}
         >
           "Thank you for being part of our journey. Your presence at our wedding means the world to us.
           We look forward to celebrating this beautiful beginning with the ones we love most."
@@ -131,36 +136,99 @@ export default function Footer() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.45 }}
-          className="flex justify-center gap-4 mb-10"
+          className="flex justify-center gap-6 mb-10"
         >
-          {SOCIAL.map((s) => (
-            <motion.a
-              key={s.label}
-              href={s.href}
-              aria-label={s.label}
-              whileHover={{ scale: 1.2, y: -4 }}
-              whileTap={{ scale: 0.9 }}
-              className="flex flex-col items-center gap-1"
-              style={{ textDecoration: 'none' }}
+          {/* Instagram */}
+          <motion.a
+            href="#"
+            aria-label="Instagram"
+            whileHover={{ scale: 1.15, y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex flex-col items-center gap-1.5"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(139,26,48,0.06)',
+                border: '1px solid rgba(139,26,48,0.2)',
+                color: '#8B1A30',
+                transition: 'all 0.3s',
+              }}
             >
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center text-xl"
-                style={{
-                  background: 'rgba(201,169,110,0.1)',
-                  border: '1px solid rgba(201,169,110,0.25)',
-                  transition: 'all 0.3s',
-                }}
-              >
-                {s.icon}
-              </div>
-              <span
-                className="text-xs"
-                style={{ color: 'rgba(201,169,110,0.5)', fontFamily: 'Montserrat, sans-serif' }}
-              >
-                {s.label}
-              </span>
-            </motion.a>
-          ))}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </div>
+            <span
+              className="text-[0.7rem] uppercase tracking-wider font-semibold"
+              style={{ color: '#8B1A30', fontFamily: 'Montserrat, sans-serif' }}
+            >
+              Instagram
+            </span>
+          </motion.a>
+
+          {/* Facebook */}
+          <motion.a
+            href="#"
+            aria-label="Facebook"
+            whileHover={{ scale: 1.15, y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex flex-col items-center gap-1.5"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(139,26,48,0.06)',
+                border: '1px solid rgba(139,26,48,0.2)',
+                color: '#8B1A30',
+                transition: 'all 0.3s',
+              }}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.14H6v4h3.5v12h5v-12h3.64l.63-4z"></path>
+              </svg>
+            </div>
+            <span
+              className="text-[0.7rem] uppercase tracking-wider font-semibold"
+              style={{ color: '#8B1A30', fontFamily: 'Montserrat, sans-serif' }}
+            >
+              Facebook
+            </span>
+          </motion.a>
+
+          {/* WhatsApp */}
+          <motion.a
+            href="#"
+            aria-label="WhatsApp"
+            whileHover={{ scale: 1.15, y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex flex-col items-center gap-1.5"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(139,26,48,0.06)',
+                border: '1px solid rgba(139,26,48,0.2)',
+                color: '#8B1A30',
+                transition: 'all 0.3s',
+              }}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.005 5.232 5.24 0 11.666 0c3.112.002 6.039 1.213 8.239 3.413 2.2 2.2 3.41 5.127 3.41 8.239 0 6.428-5.235 11.66-11.66 11.66-2.01-.002-3.99-.523-5.74-1.517L0 24zm6.402-3.896c1.616.96 3.2 1.47 4.887 1.47 5.164 0 9.36-4.197 9.36-9.36 0-5.163-4.195-9.36-9.36-9.36-5.165 0-9.36 4.197-9.36 9.36-.001 1.766.478 3.414 1.397 4.982L1.87 20.315l3.967-1.037.622.385z"></path>
+              </svg>
+            </div>
+            <span
+              className="text-[0.7rem] uppercase tracking-wider font-semibold"
+              style={{ color: '#8B1A30', fontFamily: 'Montserrat, sans-serif' }}
+            >
+              WhatsApp
+            </span>
+          </motion.a>
         </motion.div>
 
         {/* Navigation links */}
@@ -168,7 +236,7 @@ export default function Footer() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10"
+          className="flex flex-wrap justify-center gap-5 md:gap-7 mb-10"
         >
           {[
             ['Our Story', '#love-story'],
@@ -180,14 +248,14 @@ export default function Footer() {
             <a
               key={label}
               href={href}
-              className="text-xs tracking-wider uppercase transition-colors duration-200"
+              className="text-[0.82rem] md:text-[0.92rem] tracking-wider font-semibold uppercase transition-colors duration-200"
               style={{
-                color: 'rgba(201,169,110,0.5)',
+                color: 'rgba(139, 26, 48, 0.7)',
                 fontFamily: 'Montserrat, sans-serif',
                 textDecoration: 'none',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#C9A96E')}
-              onMouseLeave={(e) => (e.target.style.color = 'rgba(201,169,110,0.5)')}
+              onMouseEnter={(e) => (e.target.style.color = '#8B1A30')}
+              onMouseLeave={(e) => (e.target.style.color = 'rgba(139, 26, 48, 0.7)')}
             >
               {label}
             </a>
@@ -197,7 +265,7 @@ export default function Footer() {
         {/* Bottom divider */}
         <div
           className="w-full h-px mb-6"
-          style={{ background: 'linear-gradient(90deg, transparent, rgba(201,169,110,0.2), transparent)' }}
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(139, 26, 48, 0.15), transparent)' }}
         />
 
         {/* Copyright */}
@@ -205,8 +273,8 @@ export default function Footer() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-xs"
-          style={{ color: 'rgba(201,169,110,0.3)', fontFamily: 'Montserrat, sans-serif' }}
+          className="text-[0.82rem] md:text-[0.92rem] font-medium"
+          style={{ color: 'rgba(92, 32, 48, 0.8)', fontFamily: 'Montserrat, sans-serif' }}
         >
           © 2027 Ananya &amp; Arjun Wedding. Made with 💛 &amp; a lot of love.
         </motion.p>

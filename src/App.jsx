@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import EnvelopeSystem from './EnvelopeSystem';
+import { useState, useEffect } from 'react';
+import VideoIntro from './VideoIntro';
 import ScratchReveal from './ScratchReveal';
 import ScrollProgress from './ScrollProgress';
 import BackgroundEffects from './BackgroundEffects';
@@ -14,26 +14,58 @@ import Footer from './Footer';
 import FlyingParrot from './FlyingParrot';
 
 export default function App() {
-    const [showMain, setShowMain] = useState(false);
+    const [introFinished, setIntroFinished] = useState(false);
+
+    // Force scroll to top on page refresh and disable browser scroll restoration
+    useEffect(() => {
+        if ('scrollRestoration' in window.history) {
+            window.history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
+        if (!introFinished) {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            window.scrollTo(0, 0);
+        } else {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            // Instantly snap to the top of the page when curtain animation ends
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+        return () => {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        };
+    }, [introFinished]);
 
     return (
-        <div className="relative min-h-screen overflow-x-hidden bg-[#3E1620] text-[#2E2620]">
+        <>
+        {/* Video Intro — plays once on page load, then removes itself */}
+        <VideoIntro onComplete={() => setIntroFinished(true)} />
+
+        <div
+            className="relative min-h-screen overflow-x-hidden bg-[var(--bg-dark)] text-[#2E2620]"
+            style={{
+                visibility: introFinished ? 'visible' : 'hidden',
+                opacity: introFinished ? 1 : 0,
+                transition: 'opacity 0.6s ease'
+            }}
+        >
             {/* Global scroll progress bar */}
             <ScrollProgress />
 
             {/* Global background effects: petals, butterflies, sparkles, hearts */}
             <BackgroundEffects />
 
-            {/* Envelope opening animation — DO NOT TOUCH */}
-            <EnvelopeSystem onComplete={() => setShowMain(true)} />
 
-            {/* Main content — fades in after envelope */}
-            <div className={`transition-opacity duration-[1000ms] ${showMain ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
 
                 {/* ── Hero Section — DO NOT TOUCH ─────────────────────────── */}
-                <section className="relative flex min-h-screen flex-col items-start justify-center overflow-hidden bg-[#3E1620] px-[8vw] py-[8vh] text-left">
+                <section className="relative flex min-h-screen flex-col items-center sm:items-start justify-center overflow-hidden bg-[var(--bg-dark)] px-[6vw] sm:px-[8vw] py-[8vh] text-center sm:text-left">
                     {/* Decorative flower threads in top-left corner */}
-                    <div className="pointer-events-none absolute top-0 left-0 z-10 hidden sm:block">
+                    <div className="pointer-events-none absolute top-0 left-0 z-10 scale-50 origin-top-left sm:scale-100">
                         <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-95">
                             <defs>
                                 <radialGradient id="marigoldGrad" cx="50%" cy="50%" r="50%">
@@ -152,7 +184,7 @@ export default function App() {
                             <use href="#leaves" x="315" y="31" />
                         </svg>
                     </div>
-                    <div className="pointer-events-none absolute -top-6 -right-6 z-0 hidden sm:block">
+                    <div className="pointer-events-none absolute -top-6 -right-6 z-0 scale-75 origin-top-right sm:scale-100">
                         <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-90">
                             <defs>
                                 <linearGradient id="fg2" x1="0" x2="1">
@@ -174,28 +206,30 @@ export default function App() {
                         </svg>
                     </div>
                     <video
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="absolute inset-0 w-full object-cover object-[85%_center] sm:object-center scale-105 transform origin-center"
+                        style={{ bottom: '-6px', height: 'calc(100% + 6px)' }}
                         autoPlay
                         muted
                         loop
                         playsInline
                         src="https://res.cloudinary.com/n0c7bqpd/video/upload/v1783332429/kling_20260706_VIDEO_Animate_th_4164_0_hiy4bv.mp4"
                     />
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(62,22,32,0.72)_0%,rgba(62,22,32,0.45)_50%,rgba(62,22,32,0.2)_100%)]" />
+                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,240,242,0.3)_0%,rgba(255,240,242,0.1)_60%,transparent_100%)]" />
 
-                    <div className="relative z-10 max-w-[640px] flex flex-col items-start text-left transition-all duration-[1200ms] ease-out">
-                        <div className="mb-6 text-[0.95rem] md:text-[1.05rem] uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#D8BE8C] leading-loose">Two souls, one beautiful journey.<br/>Join us as we step into our forever.</div>
-                        <h1 className="m-0 mb-[0.35em] font-['Cormorant_Garamond'] text-[clamp(3.6rem,10.2vw,6.8rem)] font-medium leading-[1.05] text-[#FBF7EE] drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
-                            Ananya <em className="my-1.5 block text-[0.58em] font-normal italic tracking-[0.08em] text-[#E6CAC3]">&amp;</em> Arjun
+                    <div className="relative z-10 max-w-[640px] w-full flex flex-col items-center sm:items-start text-center sm:text-left transition-all duration-[1200ms] ease-out">
+                        <div className="mb-6 text-[0.95rem] md:text-[1.05rem] uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#9A7A40] leading-loose">Two souls, one beautiful journey.<br/>Join us as we step into our forever.</div>
+                        <h1 className="m-0 mb-[0.35em] font-['Cormorant_Garamond'] text-[clamp(3.6rem,10.2vw,6.8rem)] font-medium leading-[1.05] text-[#8B1A30] drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
+                            Ananya <em className="my-1.5 block text-[0.58em] font-normal italic tracking-[0.08em] text-[#5C2030]">&amp;</em> Arjun
                         </h1>
-                        <div className="mb-2 text-[1.45rem] md:text-[1.6rem] uppercase tracking-[0.14em] text-[#FBF7EE]">Wedding &amp; Love Reveal</div>
-                        <div className="text-[1.18rem] md:text-[1.3rem] italic text-[#E6CAC3]">Scroll down and touch the hearts to reveal the day our forever begins</div>
+                        <div className="mb-2 text-[1.45rem] md:text-[1.6rem] uppercase tracking-[0.14em] text-[#3E1620]">Wedding &amp; Love Reveal</div>
+                        <div className="text-[1.18rem] md:text-[1.3rem] italic text-[#5C2030]">Scroll down and touch the hearts to reveal the day our forever begins</div>
                     </div>
 
                     <div className="absolute bottom-[6vh] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 opacity-70 transition-opacity duration-[1000ms]">
-                        <div className="h-[34px] w-px origin-top bg-[#FBF7EE] [animation:scrollDown_1.8s_ease-in-out_infinite]" />
-                        <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#FBF7EE]">Scroll</span>
+                        <div className="h-[34px] w-px origin-top bg-[#8B1A30] [animation:scrollDown_1.8s_ease-in-out_infinite]" />
+                        <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#8B1A30]">Scroll</span>
                     </div>
+
                 </section>
                 {/* ── End Hero ──────────────────────────────────────────────── */}
 
@@ -211,8 +245,9 @@ export default function App() {
                 <Venue />
                 <RSVPForm />
                 <Footer />
-            </div>
+
             <FlyingParrot />
         </div>
+        </>
     );
 }
