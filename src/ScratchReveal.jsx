@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import SectionDecorations from './SectionDecorations';
 
 /* ── Helper ──────────────────────────────────────────────── */
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
@@ -31,11 +32,11 @@ function ScratchCard({ part, revealed, onReveal }) {
     const ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
 
-    /* Red gradient scratch layer */
+    /* Gold gradient scratch layer */
     const grad = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.8);
-    grad.addColorStop(0,   '#c0152a');
-    grad.addColorStop(0.6, '#9b111e');
-    grad.addColorStop(1,   '#7b0d19');
+    grad.addColorStop(0,   '#FFE082');
+    grad.addColorStop(0.5, '#C9A96E');
+    grad.addColorStop(1,   '#9A7A40');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
@@ -55,8 +56,8 @@ function ScratchCard({ part, revealed, onReveal }) {
         const ty = Math.sin(angle) * distance;
         const scale = 0.6 + Math.random() * 0.8;
         const rot = (Math.random() - 0.5) * 720;
-        // Spreads gold stars and red hearts
-        const char = Math.random() > 0.5 ? '❤️' : '⭐';
+        // Spreads gold stars and sparkles
+        const char = Math.random() > 0.5 ? '✨' : '⭐';
         const delay = Math.random() * 0.1;
         newParticles.push({ id: i, tx, ty, scale, rot, char, delay });
       }
@@ -120,27 +121,13 @@ function ScratchCard({ part, revealed, onReveal }) {
   return (
     <div className="flex flex-col items-center gap-3 select-none">
 
-      {/* Big red heart on top */}
-      <div
-        style={{
-          fontSize: '3.5rem',
-          lineHeight: 1,
-          color: '#c0152a',
-          filter: 'drop-shadow(0 4px 12px rgba(192,21,42,0.5))',
-          animation: `heartFloat ${3 + DATE_PARTS.indexOf(part) * 0.5}s ease-in-out infinite`,
-        }}
-        aria-hidden
-      >
-        ❤
-      </div>
-
       {/* Label above card */}
       <div
         style={{
           fontSize: '0.65rem',
           letterSpacing: '0.35em',
           textTransform: 'uppercase',
-          color: '#c0152a',
+          color: '#9A7A40',
           fontFamily: 'Montserrat, sans-serif',
           fontWeight: 600,
         }}
@@ -154,12 +141,12 @@ function ScratchCard({ part, revealed, onReveal }) {
           position: 'relative',
           width: 140,
           height: 140,
-          borderRadius: 20,
+          borderRadius: '50%',
           overflow: 'visible', // Allow particles to spread outside card borders
           boxShadow: revealed
-            ? '0 0 24px rgba(192,21,42,0.35), 0 8px 32px rgba(0,0,0,0.25)'
+            ? '0 0 24px rgba(201,169,110,0.4), 0 8px 32px rgba(0,0,0,0.25)'
             : '0 8px 32px rgba(0,0,0,0.35)',
-          border: '2px solid rgba(192,21,42,0.4)',
+          border: '2px solid rgba(201,169,110,0.5)',
           background: '#fff6f6',
           cursor: revealed ? 'default' : 'crosshair',
           transition: 'box-shadow 0.4s',
@@ -176,7 +163,7 @@ function ScratchCard({ part, revealed, onReveal }) {
             justifyContent: 'center',
             background: 'linear-gradient(135deg, #fff6f6 0%, #ffeef0 100%)',
             padding: 8,
-            borderRadius: 18,
+            borderRadius: '50%',
             overflow: 'hidden',
           }}
         >
@@ -219,7 +206,7 @@ function ScratchCard({ part, revealed, onReveal }) {
             transition: 'opacity 0.6s ease',
             pointerEvents: revealed ? 'none' : 'auto',
             touchAction: 'none',
-            borderRadius: 18,
+            borderRadius: '50%',
             zIndex: 10,
           }}
           onPointerDown={onDown}
@@ -244,13 +231,12 @@ function ScratchCard({ part, revealed, onReveal }) {
               zIndex: 20,
             }}
           >
-            <div style={{ fontSize: '1.4rem' }}>💅</div>
             <div
               style={{
                 fontSize: '0.6rem',
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.85)',
+                color: '#3E1620',
                 fontFamily: 'Montserrat, sans-serif',
                 fontWeight: 600,
                 textAlign: 'center',
@@ -289,12 +275,12 @@ function ScratchCard({ part, revealed, onReveal }) {
       {/* Status text */}
       <div
         style={{
-          fontSize: '0.65rem',
+          fontSize: '0.85rem',
           letterSpacing: '0.1em',
-          color: revealed ? '#c0152a' : 'rgba(139,26,48,0.5)',
+          color: revealed ? '#c0152a' : '#000000',
           fontFamily: 'Montserrat, sans-serif',
           transition: 'color 0.4s',
-          fontWeight: revealed ? 600 : 400,
+          fontWeight: revealed ? 600 : 500,
         }}
       >
         {revealed ? '✓ Revealed!' : 'Scratch gently...'}
@@ -311,11 +297,14 @@ export default function ScratchReveal() {
   return (
     <section
       style={{
-        background: 'linear-gradient(180deg, #fff6f6 0%, #fdeaed 60%, #fff6f6 100%)',
-        padding: '80px 24px',
+        background: 'linear-gradient(160deg, #FFF0F2 0%, #FFD6E0 50%, #FFBBD0 100%)',
+        padding: '80px 24px 110px 24px',
         textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      <SectionDecorations />
       {/* Inline styles for keyframe animations */}
       <style>{`
         @keyframes burstOut {
@@ -332,6 +321,9 @@ export default function ScratchReveal() {
           }
         }
       `}</style>
+
+      {/* Content wrapper — positioned above the decoration image */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
 
       {/* Section heading */}
       <div
@@ -406,7 +398,6 @@ export default function ScratchReveal() {
       >
         {allRevealed ? (
           <div style={{ animation: 'fadeInUp 0.7s ease forwards' }}>
-            <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>🎊 ❤️ 🎊</div>
             <div
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
@@ -454,6 +445,9 @@ export default function ScratchReveal() {
           </div>
         )}
       </div>
+
+      </div>{/* end content wrapper */}
+      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

@@ -3,13 +3,11 @@ import VideoIntro from './VideoIntro';
 import ScratchReveal from './ScratchReveal';
 import ScrollProgress from './ScrollProgress';
 import BackgroundEffects from './BackgroundEffects';
-import LoveStory from './LoveStory';
 import CoupleGallery from './CoupleGallery';
 import WeddingEvents from './WeddingEvents';
 import CountdownTimer from './CountdownTimer';
 import InvitationCard from './InvitationCard';
 import Venue from './Venue';
-import RSVPForm from './RSVPForm';
 import Footer from './Footer';
 import FlyingParrot from './FlyingParrot';
 
@@ -237,13 +235,11 @@ export default function App() {
                 <ScratchReveal />
 
                 {/* ── New Sections ──────────────────────────────────────────── */}
-                <LoveStory />
-                <CoupleGallery />
                 <WeddingEvents />
+                <CoupleGallery />
                 <CountdownTimer />
                 <InvitationCard />
                 <Venue />
-                <RSVPForm />
                 <Footer />
 
             <FlyingParrot />

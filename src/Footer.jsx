@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import SectionDecorations from './SectionDecorations';
 
 const SOCIAL = [
   { label: 'Instagram', icon: '📷', href: '#' },
@@ -32,12 +33,10 @@ export default function Footer() {
   return (
     <footer
       ref={ref}
-      className="relative pt-20 pb-10 px-4 md:px-8 text-center overflow-hidden"
-      style={{
-        background: 'linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-dark) 100%)',
-        borderTop: '1px solid rgba(201,169,110,0.3)',
-      }}
+      className="relative pt-20 pb-10 px-4 md:px-8 text-center overflow-hidden section-bg-light"
     >
+      <SectionDecorations />
+
       {/* Decorative florals */}
       <FloralDecor style={{ top: '5%', left: '2%' }} emoji="🌺" delay={0} duration={6} />
       <FloralDecor style={{ top: '5%', right: '2%' }} emoji="🌸" delay={1} duration={5} />
@@ -239,11 +238,9 @@ export default function Footer() {
           className="flex flex-wrap justify-center gap-5 md:gap-7 mb-10"
         >
           {[
-            ['Our Story', '#love-story'],
             ['Events', '#events'],
             ['Countdown', '#countdown'],
             ['Venue', '#venue'],
-            ['RSVP', '#rsvp'],
           ].map(([label, href]) => (
             <a
               key={label}
@@ -276,7 +273,7 @@ export default function Footer() {
           className="text-[0.82rem] md:text-[0.92rem] font-medium"
           style={{ color: 'rgba(92, 32, 48, 0.8)', fontFamily: 'Montserrat, sans-serif' }}
         >
-          © 2027 Ananya &amp; Arjun Wedding. Made with 💛 &amp; a lot of love.
+          Crafted by Tekkzy — AI-Powered Intelligent Cloud Solutions
         </motion.p>
       </div>
     </footer>

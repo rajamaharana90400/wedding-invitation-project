@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 @import "tailwindcss";
 
 /* ─── Design Tokens ─────────────────────────────────────── */
@@ -58,10 +59,6 @@ body {
   background: transparent;
 }
 
-.video-intro-curtain-wrap.blend-active {
-  mix-blend-mode: multiply;
-}
-
 .video-intro-player {
   position: absolute;
   inset: 0;
@@ -70,6 +67,7 @@ body {
   object-fit: fill;
   pointer-events: none;
   z-index: 1;
+  filter: url(#key-white-green);
 }
 
 /* Tap to Open Prompt */
@@ -86,6 +84,7 @@ body {
   text-align: center;
   width: 90%;
 }
+
 
 @keyframes promptEntranceAndPulse {
   0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
@@ -200,11 +199,11 @@ body {
 }
 
 .section-bg-light {
-  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
+  background: linear-gradient(160deg, #FFF0F2 0%, #FFD6E0 50%, #FFBBD0 100%);
 }
 
 .section-bg-rose {
-  background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-mid) 50%, var(--bg-dark) 100%);
+  background: linear-gradient(160deg, #FFF0F2 0%, #FFD6E0 50%, #FFBBD0 100%);
 }
 
 .premium-shadow {
@@ -339,37 +338,7 @@ body {
   font-size: 0.7rem;
 }
 
-/* ─── RSVP Form Dark Theme Overrides ─── */
-#rsvp .float-label-group input,
-#rsvp .float-label-group textarea,
-#rsvp .float-label-group select {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(139, 26, 48, 0.3);
-  color: #3E1620; /* Dark text */
-  font-weight: 500;
-}
 
-#rsvp .float-label-group label {
-  color: #8B1A30; /* Dark burgundy labels */
-  font-weight: 500;
-}
-
-#rsvp .float-label-group input:focus ~ label,
-#rsvp .float-label-group input:not(:placeholder-shown) ~ label,
-#rsvp .float-label-group textarea:focus ~ label,
-#rsvp .float-label-group textarea:not(:placeholder-shown) ~ label,
-#rsvp .float-label-group select:focus ~ label,
-#rsvp .float-label-group select:not([value=""]):valid ~ label {
-  color: #3E1620; /* Darker when focused */
-  font-weight: 600;
-}
-
-#rsvp .float-label-group input:focus,
-#rsvp .float-label-group textarea:focus,
-#rsvp .float-label-group select:focus {
-  border-color: #8B1A30;
-  box-shadow: 0 0 0 3px rgba(139, 26, 48, 0.1);
-}
 
 /* ─── Keyframes ──────────────────────────────────────────── */
 @keyframes scrollDown {
@@ -476,6 +445,40 @@ body {
 @keyframes lightRay {
   0%, 100% { opacity: 0.04; transform: rotate(var(--ray-angle)) scaleX(1); }
   50%       { opacity: 0.12; transform: rotate(var(--ray-angle)) scaleX(1.2); }
+}
+
+/* Card Float Animations */
+@keyframes eventFloatOdd {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes eventFloatEven {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+.animate-event-float-odd {
+  animation: eventFloatOdd 6s ease-in-out infinite;
+}
+.animate-event-float-even {
+  animation: eventFloatEven 7s ease-in-out infinite;
+}
+
+/* Flower Sway Animation */
+@keyframes flowerSway {
+  0% { transform: rotate(-5deg); }
+  100% { transform: rotate(5deg); }
+}
+.animate-flower-sway {
+  animation: flowerSway 3s ease-in-out infinite alternate;
+  transform-origin: top center;
+  transition: transform 0.3s ease-out;
+}
+.event-card-circle:hover ~ .garlands-row .animate-flower-sway {
+  animation: flowerSwayHover 1.4s ease-in-out infinite alternate !important;
+}
+@keyframes flowerSwayHover {
+  0% { transform: rotate(-18deg); }
+  100% { transform: rotate(18deg); }
 }
 
 /* ─── Reduced motion ─────────────────────────────────────── */

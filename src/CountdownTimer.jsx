@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import SectionDecorations from './SectionDecorations';
 
 const WEDDING_DATE = new Date('2027-02-14T10:00:00');
 
@@ -110,14 +111,12 @@ export default function CountdownTimer() {
   return (
     <section
       ref={ref}
-      className="relative py-24 px-4 md:px-8 overflow-hidden text-center"
+      className="relative pt-24 pb-32 px-4 md:px-8 section-bg-light overflow-hidden text-center"
       id="countdown"
-      style={{
-        background: 'linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-mid) 40%, var(--bg-dark) 100%)',
-        backgroundSize: '200% 200%',
-        animation: 'gradientShift 12s ease infinite',
-      }}
     >
+      <SectionDecorations />
+
+
       {/* Ambient glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -191,6 +190,8 @@ export default function CountdownTimer() {
         <div className="font-serif-wedding text-2xl md:text-5xl mt-5 md:mt-8 hidden sm:block" style={{ color: '#C9A96E' }}>:</div>
         <AnimatedDigit value={time.seconds} label="Seconds" />
       </motion.div>
+
+      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

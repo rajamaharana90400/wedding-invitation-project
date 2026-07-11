@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import SectionDecorations from './SectionDecorations';
 
 // Placeholder couple photos using picsum.photos (unique seeds for wedding aesthetic)
 const PHOTOS = [
@@ -151,9 +152,10 @@ export default function CoupleGallery() {
   return (
     <section
       ref={ref}
-      className="relative py-24 px-4 md:px-8 section-bg-rose overflow-hidden"
+      className="relative pt-24 pb-32 px-4 md:px-8 section-bg-rose overflow-hidden"
       id="gallery"
     >
+      <SectionDecorations />
       {/* Ambient glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -210,6 +212,8 @@ export default function CoupleGallery() {
 
       {/* Lightbox */}
       <Lightbox photo={lightbox} onClose={() => setLightbox(null)} />
+
+      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

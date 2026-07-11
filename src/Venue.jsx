@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import SectionDecorations from './SectionDecorations';
 
 const PIN_PATH =
   'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z';
@@ -46,16 +47,10 @@ export default function Venue() {
   return (
     <section
       ref={ref}
-      className="relative py-24 px-4 md:px-8 section-bg-light overflow-hidden"
+      className="relative pt-24 pb-32 px-4 md:px-8 section-bg-light overflow-hidden"
       id="venue"
     >
-      {/* Background elements */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(ellipse 50% 40% at 80% 20%, rgba(201,169,110,0.05) 0%, transparent 60%)`,
-        }}
-      />
+      <SectionDecorations />
 
       {/* Section Header */}
       <div className="text-center mb-16">
@@ -158,7 +153,6 @@ export default function Venue() {
             }}
           >
             <div className="flex items-start gap-3">
-              <div className="text-xl mt-0.5">📍</div>
               <div>
                 <div
                   className="font-medium text-sm mb-1"
@@ -181,9 +175,9 @@ export default function Venue() {
           {/* Info chips */}
           <div className="flex flex-wrap gap-3">
             {[
-              { icon: '📅', text: 'February 14, 2027' },
-              { icon: '🕐', text: '10:00 AM Onwards' },
-              { icon: '🚗', text: 'Valet Parking Available' },
+              { text: 'February 14, 2027' },
+              { text: '10:00 AM Onwards' },
+              { text: 'Valet Parking Available' },
             ].map((chip) => (
               <div
                 key={chip.text}
@@ -195,7 +189,6 @@ export default function Venue() {
                   fontFamily: 'Montserrat, sans-serif',
                 }}
               >
-                <span>{chip.icon}</span>
                 <span>{chip.text}</span>
               </div>
             ))}
@@ -217,12 +210,13 @@ export default function Venue() {
               textDecoration: 'none',
             }}
           >
-            <span>📍</span>
             <span>Get Directions</span>
             <span>→</span>
           </motion.a>
         </motion.div>
       </div>
+
+      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

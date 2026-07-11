@@ -3,8 +3,10 @@ import { useState, useEffect, useRef } from 'react';
 export default function VideoIntro({ onComplete }) {
     // 'waiting' = closed curtains, click to start | 'playing' = curtains opening | 'fading' | 'done'
     const [phase, setPhase] = useState('waiting');
+    const [revealActive, setRevealActive] = useState(false);
     const videoRef = useRef(null);
     const hasEnded = useRef(false);
+    const timerRef = useRef(null);
 
     // Set up video events (loaded metadata, ended, error, timeupdate)
     useEffect(() => {
@@ -33,6 +35,9 @@ export default function VideoIntro({ onComplete }) {
 
         const handlePlaying = () => {
             setPhase('playing');
+            timerRef.current = setTimeout(() => {
+                setRevealActive(true);
+            }, 600);
         };
 
         video.addEventListener('playing', handlePlaying);
@@ -45,6 +50,7 @@ export default function VideoIntro({ onComplete }) {
             video.removeEventListener('ended', handleEnded);
             video.removeEventListener('timeupdate', handleTimeUpdate);
             video.removeEventListener('error', handleError);
+            if (timerRef.current) clearTimeout(timerRef.current);
         };
     }, [onComplete]);
 
@@ -85,7 +91,7 @@ export default function VideoIntro({ onComplete }) {
             <div
                 className="video-intro-couple"
                 style={{
-                    opacity: phase !== 'waiting' ? 1 : 0,
+                    opacity: revealActive ? 1 : 0,
                     transition: 'opacity 0.4s ease-out'
                 }}
             >
@@ -101,9 +107,8 @@ export default function VideoIntro({ onComplete }) {
                 </div>
             </div>
 
-            {/* Curtain video wrapped in blend-mode container */}
-            {/* mix-blend-mode is only active when playing/fading, keeping curtains opaque when closed */}
-            <div className={`video-intro-curtain-wrap ${phase !== 'waiting' ? 'blend-active' : ''}`}>
+            {/* Curtain video wrapped in container */}
+            <div className="video-intro-curtain-wrap">
                 <video
                     ref={videoRef}
                     className="video-intro-player"
@@ -116,12 +121,19 @@ export default function VideoIntro({ onComplete }) {
                 </video>
             </div>
 
-            {/* Hint Prompt for interactivity */}
-            {phase === 'waiting' && (
-                <div className="video-intro-prompt">
-                    👆
-                </div>
-            )}
+            {/* SVG Chroma Key Filter to make green/white video background transparent */}
+            <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
+                <defs>
+                    <filter id="key-white-green">
+                        <feColorMatrix type="matrix" values="
+                            1  0  0  0  0
+                            0  1  0  0  0
+                            0  0  1  0  0
+                            0 -2.5 -1 0 1.35
+                        " />
+                    </filter>
+                </defs>
+            </svg>
         </div>
     );
 }

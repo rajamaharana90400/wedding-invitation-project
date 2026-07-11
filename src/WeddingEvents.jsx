@@ -1,5 +1,15 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
+import SectionDecorations from './SectionDecorations';
+import FloatingRosePetals from './FloatingRosePetals';
+
+// Premium muted Indian wedding flower color palette
+const SaffronOrange = '#E5A93C'; // Warm golden saffron
+const GoldenYellow  = '#F3D078'; // Soft light yellow
+const PaleGold      = '#FFE082'; // Center dot pale gold
+const CrimsonRose   = '#A8223B'; // Luxury deep crimson rose
+const SageGreen     = '#7A9A60'; // Soft muted green leaf
+const GoldenThread  = '#C9A96E'; // Dashed garland thread
 
 const events = [
   {
@@ -70,117 +80,337 @@ const events = [
   },
 ];
 
-function EventCard({ ev, index }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
-
+function FlowerVineLine({ top, height }) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50, scale: 0.95 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      className={`relative rounded-2xl p-6 md:p-8 overflow-hidden cursor-default premium-shadow`}
+    <div
+      className="absolute left-[24px] md:left-1/2 -translate-x-1/2 w-[56px] overflow-hidden pointer-events-none"
       style={{
-        backgroundImage: `url(${ev.bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        border: `1px solid ${ev.border}30`,
-        boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px ${ev.border}10`,
+        zIndex: 1,
+        top: top || 0,
+        height: height || 0,
       }}
     >
-      {/* Heavy dark gradient overlay for text readability */}
       <div
-        className="absolute inset-0 transition-opacity duration-500"
         style={{
-          background: 'linear-gradient(135deg, rgba(30, 8, 12, 0.9) 0%, rgba(50, 12, 20, 0.8) 100%)',
+          height: '100%',
+          backgroundImage: 'url(/flowervine.png)',
+          backgroundSize: '56px auto',
+          backgroundRepeat: 'repeat-y',
+          width: '100%',
+          opacity: 0.95,
         }}
       />
-      {/* Golden hover radial gradient */}
+    </div>
+  );
+}
+
+// Helper to get thematic card overlay gradients matching each event type (light theme)
+const getOverlayGradient = (id) => {
+  switch (id) {
+    case 'welcome':
+      return 'linear-gradient(135deg, rgba(255, 252, 244, 0.95) 0%, rgba(254, 246, 232, 0.92) 100%)'; // Light gold
+    case 'mehendi':
+      return 'linear-gradient(135deg, rgba(250, 255, 252, 0.95) 0%, rgba(238, 250, 244, 0.92) 100%)'; // Light green
+    case 'haldi':
+      return 'linear-gradient(135deg, rgba(255, 253, 240, 0.95) 0%, rgba(254, 248, 225, 0.92) 100%)'; // Light saffron
+    case 'sangeet':
+      return 'linear-gradient(135deg, rgba(253, 250, 255, 0.95) 0%, rgba(246, 238, 252, 0.92) 100%)'; // Light lavender
+    case 'wedding':
+      return 'linear-gradient(135deg, rgba(255, 250, 251, 0.95) 0%, rgba(253, 238, 241, 0.92) 100%)'; // Light rose
+    case 'reception':
+      return 'linear-gradient(135deg, rgba(250, 253, 255, 0.95) 0%, rgba(238, 246, 254, 0.92) 100%)'; // Light blue
+    default:
+      return 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.92) 100%)';
+  }
+};
+
+// Helper to get high-contrast theme text and icon colors for readability on light backgrounds
+const getThemeColor = (id) => {
+  switch (id) {
+    case 'welcome':
+      return '#A07010'; // Rich dark gold
+    case 'mehendi':
+      return '#0E7543'; // Forest green
+    case 'haldi':
+      return '#B58200'; // Turmeric gold
+    case 'sangeet':
+      return '#7C3AED'; // Royal purple
+    case 'wedding':
+      return '#8B1A30'; // Crimson burgundy
+    case 'reception':
+      return '#1D4ED8'; // Royal blue
+    default:
+      return '#8B1A30';
+  }
+};
+
+function EventTimelineCard({ ev, index, dotRef }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-160px' });
+  const isLeft = index % 2 === 0;
+
+  return (
+    <div
+      ref={ref}
+      className="relative grid grid-cols-[48px_1fr] md:grid-cols-[1fr_48px_1fr] gap-4 md:gap-8 mb-20 items-center w-full"
+    >
+      {/* Event Circular Card Container */}
       <div
-        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle at 50% 0%, ${ev.border}25 0%, transparent 70%)`,
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10">
-        <h3
-          className="font-serif-wedding text-2xl md:text-3xl mb-1 pt-2"
-          style={{ color: '#FBF7EE', fontWeight: 500 }}
+        className={`relative col-start-2 justify-self-center flex flex-col items-center event-card-wrap ${
+          isLeft ? 'md:col-start-1' : 'md:col-start-3'
+        }`}
+      >
+        <motion.div
+          initial={{ opacity: 0, x: isLeft ? -80 : 80 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+          whileHover={{
+            scale: 1.04,
+            boxShadow: `0 20px 48px rgba(0,0,0,0.15), 0 0 24px ${ev.border}70`,
+            borderColor: ev.border,
+            zIndex: 20,
+          }}
+          className={`relative rounded-full p-8 overflow-hidden cursor-pointer premium-shadow flex flex-col items-center justify-center text-center event-card-circle group ${
+            index % 2 === 0 ? 'animate-event-float-odd' : 'animate-event-float-even'
+          }`}
+          style={{
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: `${ev.border}45`,
+            width: 'clamp(290px, 82vw, 350px)',
+            height: 'clamp(290px, 82vw, 350px)',
+            transition: 'border-color 0.4s, box-shadow 0.4s',
+          }}
         >
-          {ev.name}
-        </h3>
-        <div className="gold-divider mb-4" style={{ marginLeft: 0, width: 48 }} />
+          {/* Background image container enabling independent hover zoom */}
+          <div
+            className="absolute inset-0 transition-transform duration-700 ease-out scale-100 group-hover:scale-110 pointer-events-none"
+            style={{
+              backgroundImage: `url(${ev.bgImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+          {/* Soft light pastel gradient overlay */}
+          <div
+            className="absolute inset-0 opacity-95 group-hover:opacity-88 transition-opacity duration-500 pointer-events-none"
+            style={{
+              background: getOverlayGradient(ev.id),
+            }}
+          />
+          {/* Golden hover radial gradient */}
+          <div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            style={{
+              background: `radial-gradient(circle at 50% 50%, ${ev.border}30 0%, transparent 80%)`,
+            }}
+          />
 
-        <p
-          className="text-[0.95rem] md:text-[1.05rem] leading-relaxed mb-5"
-          style={{ color: 'rgba(251,247,238,0.85)', fontFamily: 'Montserrat, sans-serif' }}
+          {/* Content */}
+          <div className="relative z-10 w-full px-4 flex flex-col items-center">
+            <h3
+              className="font-serif-wedding text-xl md:text-2xl mb-1 pt-1 text-center"
+              style={{ color: '#8B1A30', fontWeight: 600 }}
+            >
+              {ev.name}
+            </h3>
+            <div className="gold-divider mb-3" style={{ margin: '0 auto 0.75rem', width: 44 }} />
+
+            <p
+              className="text-[0.78rem] md:text-[0.88rem] leading-relaxed mb-4 text-center"
+              style={{ color: '#4E3C30', fontFamily: 'Montserrat, sans-serif', fontWeight: 500 }}
+            >
+              {ev.desc}
+            </p>
+
+            {/* Meta info with SVG icons */}
+            <div className="flex flex-col items-center gap-1.5 text-[0.72rem] md:text-[0.78rem]" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              <div className="flex items-center justify-center gap-1.5 font-semibold" style={{ color: getThemeColor(ev.id) }}>
+                <svg className="w-3 h-3 opacity-90" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>{ev.date}</span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5" style={{ color: getThemeColor(ev.id) }}>
+                <svg className="w-3 h-3 opacity-90" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>{ev.time}</span>
+              </div>
+              <div className="flex items-center justify-center gap-1.5 text-center px-2" style={{ color: '#4E3C30' }}>
+                <svg className="w-3 h-3 opacity-90 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span className="line-clamp-1">{ev.venue}</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Hanging flower garlands row decoration */}
+        <div
+          className="relative flex justify-center items-start gap-2.5 md:gap-4 garlands-row pointer-events-none"
+          style={{
+            marginTop: '-12px',
+            zIndex: 10,
+            width: '100%',
+          }}
         >
-          {ev.desc}
-        </p>
+          {/* Garland 1: Short */}
+          <div className="animate-flower-sway" style={{ animationDelay: '-0.4s', animationDuration: '2.8s' }}>
+            <svg width="20" height="65" viewBox="0 0 24 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="12" y1="0" x2="12" y2="55" stroke={GoldenThread} strokeWidth="1.2" strokeDasharray="2 2" />
+              <circle cx="12" cy="15" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="15" r="3" fill={GoldenYellow} />
+              <circle cx="12" cy="15" r="1.5" fill={PaleGold} />
+              <path d="M12 30 C9 27, 7 32, 12 37 C17 32, 15 27, 12 30 Z" fill={CrimsonRose} />
+              <circle cx="12" cy="48" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="48" r="3" fill={GoldenYellow} />
+              <path d="M12 55 Q15 58 12 61 Q9 58 12 55 Z" fill={SageGreen} />
+            </svg>
+          </div>
 
-        {/* Meta info with SVG icons instead of emojis */}
-        <div className="space-y-2.5">
-          <div className="flex items-center gap-2 text-xs" style={{ color: ev.border }}>
-            <svg className="w-3.5 h-3.5 opacity-90" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
+          {/* Garland 2: Medium */}
+          <div className="animate-flower-sway" style={{ animationDelay: '-0.8s', animationDuration: '3.4s' }}>
+            <svg width="20" height="85" viewBox="0 0 24 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="12" y1="0" x2="12" y2="75" stroke={GoldenThread} strokeWidth="1.2" strokeDasharray="2 2" />
+              <circle cx="12" cy="15" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="15" r="3" fill={GoldenYellow} />
+              <circle cx="12" cy="15" r="1.5" fill={PaleGold} />
+              <circle cx="12" cy="32" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="32" r="3" fill={GoldenYellow} />
+              <path d="M12 48 C9 45, 7 50, 12 55 C17 50, 15 45, 12 48 Z" fill={CrimsonRose} />
+              <circle cx="12" cy="68" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="68" r="3" fill={GoldenYellow} />
+              <path d="M12 75 Q15 78 12 81 Q9 78 12 75 Z" fill={SageGreen} />
             </svg>
-            <span className="font-medium">{ev.date}</span>
           </div>
-          <div className="flex items-center gap-2 text-xs" style={{ color: ev.border }}>
-            <svg className="w-3.5 h-3.5 opacity-90" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
+
+          {/* Garland 3: Long */}
+          <div className="animate-flower-sway" style={{ animationDelay: '0s', animationDuration: '3.0s' }}>
+            <svg width="20" height="105" viewBox="0 0 24 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="12" y1="0" x2="12" y2="95" stroke={GoldenThread} strokeWidth="1.2" strokeDasharray="2 2" />
+              <circle cx="12" cy="15" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="15" r="3" fill={GoldenYellow} />
+              <circle cx="12" cy="15" r="1.5" fill={PaleGold} />
+              <path d="M12 30 C9 27, 7 32, 12 37 C17 32, 15 27, 12 30 Z" fill={CrimsonRose} />
+              <circle cx="12" cy="50" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="50" r="3" fill={GoldenYellow} />
+              <circle cx="12" cy="68" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="68" r="3" fill={GoldenYellow} />
+              <path d="M12 82 C9 79, 7 84, 12 89 C17 84, 15 79, 12 82 Z" fill={CrimsonRose} />
+              <path d="M12 95 Q15 98 12 101 Q9 98 12 95 Z" fill={SageGreen} />
             </svg>
-            <span>{ev.time}</span>
           </div>
-          <div className="flex items-center gap-2 text-xs" style={{ color: 'rgba(251,247,238,0.9)' }}>
-            <svg className="w-3.5 h-3.5 opacity-90" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
+
+          {/* Garland 4: Medium */}
+          <div className="animate-flower-sway" style={{ animationDelay: '-1.2s', animationDuration: '3.2s' }}>
+            <svg width="20" height="85" viewBox="0 0 24 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="12" y1="0" x2="12" y2="75" stroke={GoldenThread} strokeWidth="1.2" strokeDasharray="2 2" />
+              <circle cx="12" cy="15" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="15" r="3" fill={GoldenYellow} />
+              <circle cx="12" cy="15" r="1.5" fill={PaleGold} />
+              <circle cx="12" cy="32" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="32" r="3" fill={GoldenYellow} />
+              <path d="M12 48 C9 45, 7 50, 12 55 C17 50, 15 45, 12 48 Z" fill={CrimsonRose} />
+              <circle cx="12" cy="68" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="68" r="3" fill={GoldenYellow} />
+              <path d="M12 75 Q15 78 12 81 Q9 78 12 75 Z" fill={SageGreen} />
             </svg>
-            <span>{ev.venue}</span>
+          </div>
+
+          {/* Garland 5: Short */}
+          <div className="animate-flower-sway" style={{ animationDelay: '-0.2s', animationDuration: '2.6s' }}>
+            <svg width="20" height="65" viewBox="0 0 24 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="12" y1="0" x2="12" y2="55" stroke={GoldenThread} strokeWidth="1.2" strokeDasharray="2 2" />
+              <circle cx="12" cy="15" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="15" r="3" fill={GoldenYellow} />
+              <circle cx="12" cy="15" r="1.5" fill={PaleGold} />
+              <path d="M12 30 C9 27, 7 32, 12 37 C17 32, 15 27, 12 30 Z" fill={CrimsonRose} />
+              <circle cx="12" cy="48" r="5" fill={SaffronOrange} />
+              <circle cx="12" cy="48" r="3" fill={GoldenYellow} />
+              <path d="M12 55 Q15 58 12 61 Q9 58 12 55 Z" fill={SageGreen} />
+            </svg>
           </div>
         </div>
-
-        {/* Hover underline */}
-        <motion.div
-          className="absolute bottom-0 left-0 h-0.5 w-0"
-          whileHover={{ width: '100%' }}
-          transition={{ duration: 0.4 }}
-          style={{ background: `linear-gradient(90deg, transparent, ${ev.border}, transparent)` }}
-        />
       </div>
-    </motion.div>
+
+      {/* Center dot on timeline */}
+      <div
+        ref={dotRef}
+        className="col-start-1 md:col-start-2 flex justify-center items-center"
+        style={{ width: '48px', justifySelf: 'center', zIndex: 5 }}
+      >
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={inView ? { scale: 1, opacity: 1 } : {}}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
+          style={{
+            background: 'linear-gradient(135deg, #C9A96E, #8B1A30)',
+            boxShadow: '0 0 15px rgba(139,26,48,0.3)',
+          }}
+        >
+          {index + 1}
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
 export default function WeddingEvents() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
+  const sectionRef = useRef(null);
+  const timelineRef = useRef(null);
+  const dot1Ref = useRef(null);
+  const dot6Ref = useRef(null);
+
+  const [lineCoords, setLineCoords] = useState({ top: 0, height: 0 });
+  const inView = useInView(sectionRef, { once: true, margin: '-100px' });
+
+  useEffect(() => {
+    const updateLine = () => {
+      if (dot1Ref.current && dot6Ref.current && timelineRef.current) {
+        const dot1Rect = dot1Ref.current.getBoundingClientRect();
+        const dot6Rect = dot6Ref.current.getBoundingClientRect();
+        const timelineRect = timelineRef.current.getBoundingClientRect();
+
+        const top = dot1Rect.top + dot1Rect.height / 2 - timelineRect.top;
+        const bottom = dot6Rect.top + dot6Rect.height / 2 - timelineRect.top;
+
+        setLineCoords({
+          top,
+          height: bottom - top,
+        });
+      }
+    };
+
+    updateLine();
+    window.addEventListener('resize', updateLine);
+    window.addEventListener('load', updateLine);
+    const interval = setInterval(updateLine, 400);
+
+    return () => {
+      window.removeEventListener('resize', updateLine);
+      window.removeEventListener('load', updateLine);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <section
-      ref={ref}
-      className="relative py-24 px-4 md:px-8 section-bg-light overflow-hidden"
+      ref={sectionRef}
+      className="relative py-24 px-4 md:px-8 section-bg-rose overflow-hidden"
       id="events"
     >
-      {/* Background texture */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 80% 30% at 50% -10%, rgba(201,169,110,0.08) 0%, transparent 50%),
-            radial-gradient(ellipse 40% 40% at 10% 80%, rgba(242,196,206,0.06) 0%, transparent 50%)
-          `,
-        }}
-      />
+      <FloatingRosePetals />
+
+      {/* Content wrapper — renders above the decoration image */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
 
       {/* Section Header */}
       <div className="text-center mb-16">
@@ -218,54 +448,59 @@ export default function WeddingEvents() {
           className="mt-6 text-[1.05rem] md:text-[1.2rem] max-w-lg mx-auto"
           style={{ color: '#3E1620', fontFamily: 'Montserrat, sans-serif' }}
         >
-          Five ceremonies, five celebrations, one unforgettable week.
+          Six ceremonies, six celebrations, one unforgettable week.
           Join us for every magical moment.
         </motion.p>
       </div>
 
-      {/* Cards Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Timeline Layout */}
+      <div ref={timelineRef} className="relative max-w-3xl mx-auto">
+        <FlowerVineLine top={lineCoords.top} height={lineCoords.height} />
         {events.map((ev, i) => (
-          <EventCard key={ev.id} ev={ev} index={i} />
+          <EventTimelineCard
+            key={ev.id}
+            ev={ev}
+            index={i}
+            dotRef={i === 0 ? dot1Ref : i === events.length - 1 ? dot6Ref : null}
+          />
         ))}
       </div>
 
-      {/* Decorative floating elements */}
+
+      </div>{/* end content wrapper */}
+
+      {/* ── Cherry blossom strip at bottom — transitions into Our Gallery ── */}
       <div
-        className="absolute bottom-10 right-8 text-5xl pointer-events-none opacity-20"
-        style={{ animation: 'floatY 7s ease-in-out 1s infinite' }}
+        aria-hidden
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '200px',
+          pointerEvents: 'none',
+          overflow: 'hidden',
+          zIndex: 2,
+        }}
       >
-        🦚
-      </div>
-      <div
-        className="absolute top-20 left-6 text-6xl pointer-events-none opacity-20"
-        style={{ animation: 'floatY 5s ease-in-out 2s infinite' }}
-      >
-        🦚
-      </div>
-      <div
-        className="absolute bottom-40 left-12 text-5xl pointer-events-none opacity-30"
-        style={{ animation: 'floatY 6s ease-in-out 0s infinite' }}
-      >
-        🌸
-      </div>
-      <div
-        className="absolute top-40 right-16 text-4xl pointer-events-none opacity-30"
-        style={{ animation: 'floatY 8s ease-in-out 3s infinite' }}
-      >
-        🌺
-      </div>
-      <div
-        className="absolute top-1/2 left-4 text-3xl pointer-events-none opacity-20"
-        style={{ animation: 'floatY 4s ease-in-out 1.5s infinite' }}
-      >
-        🏵️
-      </div>
-      <div
-        className="absolute bottom-20 right-1/4 text-4xl pointer-events-none opacity-20"
-        style={{ animation: 'floatY 5.5s ease-in-out 0.5s infinite' }}
-      >
-        🌷
+        <img
+          src="/backside.png"
+          alt=""
+          draggable={false}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '400px',        /* show only the top portion (branches) of the image */
+            objectFit: 'fill',
+            objectPosition: 'top',  /* crop to show top branches at bottom of section */
+            opacity: 0.9,
+            mixBlendMode: 'multiply',
+            userSelect: 'none',
+            pointerEvents: 'none',
+          }}
+        />
       </div>
     </section>
   );
