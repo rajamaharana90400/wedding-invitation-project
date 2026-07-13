@@ -1,4 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Lenis from 'lenis';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import VideoIntro from './VideoIntro';
 import ScratchReveal from './ScratchReveal';
 import ScrollProgress from './ScrollProgress';
@@ -11,8 +14,12 @@ import Venue from './Venue';
 import Footer from './Footer';
 import FlyingParrot from './FlyingParrot';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function App() {
     const [introFinished, setIntroFinished] = useState(false);
+    const contentRef = useRef(null);
+    const heroRef = useRef(null);
 
     // Force scroll to top on page refresh and disable browser scroll restoration
     useEffect(() => {
@@ -38,11 +45,61 @@ export default function App() {
         };
     }, [introFinished]);
 
+    useEffect(() => {
+        if (!introFinished || typeof window === 'undefined') return undefined;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return undefined;
+
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            smoothTouch: false,
+        });
+
+        const raf = (time) => {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        };
+        const frame = requestAnimationFrame(raf);
+
+        return () => {
+            cancelAnimationFrame(frame);
+            lenis.destroy();
+        };
+    }, [introFinished]);
+
+    useEffect(() => {
+        if (!introFinished || typeof window === 'undefined') return undefined;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return undefined;
+
+        const heroItems = heroRef.current ? Array.from(heroRef.current.querySelectorAll('[data-animate]')) : [];
+        if (heroItems.length > 0) {
+            gsap.from(heroItems, {
+                opacity: 0,
+                y: 32,
+                duration: 1.15,
+                stagger: 0.12,
+                ease: 'power3.out',
+                delay: 0.18,
+            });
+        }
+
+        ScrollTrigger.refresh();
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, [introFinished]);
+
     return (
         <>
             <VideoIntro onComplete={() => setIntroFinished(true)} />
 
             <div
+                ref={contentRef}
                 className="relative min-h-screen overflow-x-hidden bg-[var(--bg-dark)] text-[#2E2620]"
                 style={{
                     visibility: introFinished ? 'visible' : 'hidden',
@@ -59,7 +116,7 @@ export default function App() {
 
 
                 {/* ── Hero Section — DO NOT TOUCH ─────────────────────────── */}
-                <section className="relative flex min-h-screen flex-col items-center sm:items-start justify-center overflow-hidden bg-[var(--bg-dark)] px-[6vw] sm:px-[8vw] py-[8vh] text-center sm:text-left">
+                <section ref={heroRef} className="relative flex min-h-screen flex-col items-center sm:items-start justify-center overflow-hidden bg-[var(--bg-dark)] px-[6vw] sm:px-[8vw] py-[8vh] text-center sm:text-left">
                     {/* Decorative flower threads in top-left corner */}
                     <div className="pointer-events-none absolute top-0 left-0 z-10 scale-50 origin-top-left sm:scale-100">
                         <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-95">
@@ -213,26 +270,40 @@ export default function App() {
                     <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,240,242,0.3)_0%,rgba(255,240,242,0.1)_60%,transparent_100%)]" />
 
                     <div className="relative z-10 max-w-[640px] w-full flex flex-col items-center sm:items-start text-center sm:text-left transition-all duration-[1200ms] ease-out">
-                        <div className="mb-6 text-[0.95rem] md:text-[1.05rem] uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#9A7A40] leading-loose">Two souls, one beautiful journey.<br />Join us as we step into our forever.</div>
-                        <h1 className="m-0 mb-[0.35em] font-['Cormorant_Garamond'] text-[clamp(3.6rem,10.2vw,6.8rem)] font-medium leading-[1.05] text-[#8B1A30] drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
+                        <div data-animate className="mb-6 text-[0.95rem] md:text-[1.05rem] uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#9A7A40] leading-loose">Two souls, one beautiful journey.<br />Join us as we step into our forever.</div>
+                        <h1 data-animate className="m-0 mb-[0.35em] font-['Cormorant_Garamond'] text-[clamp(3.6rem,10.2vw,6.8rem)] font-medium leading-[1.05] text-[#8B1A30] drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
                             Ananya <em className="my-1.5 block text-[0.58em] font-normal italic tracking-[0.08em] text-[#5C2030]">&amp;</em> Arjun
                         </h1>
-                        <div className="mb-2 text-[1.45rem] md:text-[1.6rem] uppercase tracking-[0.14em] text-[#3E1620]">Wedding &amp; Love Reveal</div>
+                        <div data-animate className="mb-2 text-[1.45rem] md:text-[1.6rem] uppercase tracking-[0.14em] text-[#3E1620]">Wedding &amp; Love Reveal</div>
                     </div>
 
                 </section>
                 {/* ── End Hero ──────────────────────────────────────────────── */}
 
                 {/* Scratch Reveal — DO NOT TOUCH */}
-                <ScratchReveal />
+                <div data-scroll-section>
+                    <ScratchReveal />
+                </div>
 
                 {/* ── New Sections ──────────────────────────────────────────── */}
-                <WeddingEvents />
-                <CoupleGallery />
-                <CountdownTimer />
-                <InvitationCard />
-                <Venue />
-                <Footer />
+                <div data-scroll-section>
+                    <WeddingEvents />
+                </div>
+                <div data-scroll-section>
+                    <CoupleGallery />
+                </div>
+                <div data-scroll-section>
+                    <CountdownTimer />
+                </div>
+                <div data-scroll-section>
+                    <InvitationCard />
+                </div>
+                <div data-scroll-section>
+                    <Venue />
+                </div>
+                <div data-scroll-section>
+                    <Footer />
+                </div>
 
                 <FlyingParrot />
             </div>
