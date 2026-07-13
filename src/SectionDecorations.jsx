@@ -17,24 +17,27 @@ export default function SectionDecorations() {
       }}
     >
       {/* Cherry blossom frame — covers the entire section */}
-      <img
-        src="/backside.png"
-        alt=""
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'fill',        /* stretch to fill full section size */
-          objectPosition: 'center',
-          opacity: 0.85,
-          mixBlendMode: 'multiply', /* white areas become transparent, pink stays */
-          userSelect: 'none',
-          pointerEvents: 'none',
-          display: 'block',
-        }}
-        draggable={false}
-      />
+      <picture>
+        <source media="(min-width: 768px)" srcSet="/desktop.png" />
+        <img
+          src="/backside.png"
+          alt=""
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'fill',        /* stretch to fill full section size */
+            objectPosition: 'center',
+            opacity: 0.85,
+            mixBlendMode: 'multiply', /* white areas become transparent, pink stays */
+            userSelect: 'none',
+            pointerEvents: 'none',
+            display: 'block',
+          }}
+          draggable={false}
+        />
+      </picture>
     </div>
   );
 }

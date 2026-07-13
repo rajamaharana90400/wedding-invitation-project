@@ -301,6 +301,7 @@ export default function ScratchReveal() {
         padding: '80px 24px 110px 24px',
         textAlign: 'center',
         position: 'relative',
+        zIndex: 2,
         overflow: 'hidden',
       }}
     >
@@ -447,7 +448,6 @@ export default function ScratchReveal() {
       </div>
 
       </div>{/* end content wrapper */}
-      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

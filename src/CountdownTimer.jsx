@@ -111,9 +111,19 @@ export default function CountdownTimer() {
   return (
     <section
       ref={ref}
-      className="relative pt-24 pb-32 px-4 md:px-8 section-bg-light overflow-hidden text-center"
+      className="relative px-4 md:px-8 section-bg-light overflow-hidden text-center"
       id="countdown"
+      style={{
+        paddingTop: '160px',
+        paddingBottom: '128px',
+        marginTop: '-80px',
+        borderRadius: '50% 50% 0 0 / 80px 80px 0 0',
+        position: 'relative',
+        zIndex: 5,
+      }}
     >
+      {/* Curved Divider to overlap the section below (placed first so SectionDecorations multiply blends over it) */}
+
       <SectionDecorations />
 
 
@@ -190,8 +200,6 @@ export default function CountdownTimer() {
         <div className="font-serif-wedding text-2xl md:text-5xl mt-5 md:mt-8 hidden sm:block" style={{ color: '#C9A96E' }}>:</div>
         <AnimatedDigit value={time.seconds} label="Seconds" />
       </motion.div>
-
-      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

@@ -404,10 +404,54 @@ export default function WeddingEvents() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 px-4 md:px-8 section-bg-rose overflow-hidden"
+      className="relative px-4 md:px-8 section-bg-rose overflow-hidden"
       id="events"
+      style={{
+        paddingTop: '160px',
+        paddingBottom: '96px',
+        marginTop: '-80px',
+        borderRadius: '50% 50% 0 0 / 80px 80px 0 0',
+        position: 'relative',
+        zIndex: 3,
+      }}
     >
       <FloatingRosePetals />
+
+      {/* Upper cherry blossom branches (background removed) */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '400px',
+          pointerEvents: 'none',
+          overflow: 'hidden',
+          zIndex: 0,
+          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)',
+        }}
+      >
+        <img
+          src="/wedding_events_top_transparent.png"
+          alt=""
+          draggable={false}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'top center',
+            opacity: 0.95,
+            mixBlendMode: 'multiply',
+            userSelect: 'none',
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
 
       {/* Content wrapper — renders above the decoration image */}
       <div style={{ position: 'relative', zIndex: 1 }}>
@@ -465,7 +509,6 @@ export default function WeddingEvents() {
           />
         ))}
       </div>
-
 
       </div>{/* end content wrapper */}
 

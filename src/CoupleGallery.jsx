@@ -152,8 +152,16 @@ export default function CoupleGallery() {
   return (
     <section
       ref={ref}
-      className="relative pt-24 pb-32 px-4 md:px-8 section-bg-rose overflow-hidden"
+      className="relative px-4 md:px-8 section-bg-rose overflow-hidden"
       id="gallery"
+      style={{
+        paddingTop: '160px',
+        paddingBottom: '128px',
+        marginTop: '-80px',
+        borderRadius: '50% 50% 0 0 / 80px 80px 0 0',
+        position: 'relative',
+        zIndex: 4,
+      }}
     >
       <SectionDecorations />
       {/* Ambient glow */}
@@ -212,8 +220,6 @@ export default function CoupleGallery() {
 
       {/* Lightbox */}
       <Lightbox photo={lightbox} onClose={() => setLightbox(null)} />
-
-      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

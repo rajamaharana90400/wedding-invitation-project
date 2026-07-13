@@ -41,22 +41,22 @@ export default function App() {
 
     return (
         <>
-        {/* Video Intro — plays once on page load, then removes itself */}
-        <VideoIntro onComplete={() => setIntroFinished(true)} />
+            {/* Video Intro — plays once on page load, then removes itself */}
+            <VideoIntro onComplete={() => setIntroFinished(true)} />
 
-        <div
-            className="relative min-h-screen overflow-x-hidden bg-[var(--bg-dark)] text-[#2E2620]"
-            style={{
-                visibility: introFinished ? 'visible' : 'hidden',
-                opacity: introFinished ? 1 : 0,
-                transition: 'opacity 0.6s ease'
-            }}
-        >
-            {/* Global scroll progress bar */}
-            <ScrollProgress />
+            <div
+                className="relative min-h-screen overflow-x-hidden bg-[var(--bg-dark)] text-[#2E2620]"
+                style={{
+                    visibility: introFinished ? 'visible' : 'hidden',
+                    opacity: introFinished ? 1 : 0,
+                    transition: 'opacity 0.6s ease'
+                }}
+            >
+                {/* Global scroll progress bar */}
+                <ScrollProgress />
 
-            {/* Global background effects: petals, butterflies, sparkles, hearts */}
-            <BackgroundEffects />
+                {/* Global background effects: petals, butterflies, sparkles, hearts */}
+                <BackgroundEffects />
 
 
 
@@ -85,7 +85,7 @@ export default function App() {
                                     <stop offset="100%" stopColor="#9A7A40" />
                                 </linearGradient>
                                 <filter id="shadow" x="-35%" y="-35%" width="170%" height="170%">
-                                    <feDropShadow dx="1" dy="2" stdDeviation="1.5" floodOpacity="0.4"/>
+                                    <feDropShadow dx="1" dy="2" stdDeviation="1.5" floodOpacity="0.4" />
                                 </filter>
 
                                 {/* Realistic Marigold Definition (scaled up) */}
@@ -215,17 +215,11 @@ export default function App() {
                     <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,240,242,0.3)_0%,rgba(255,240,242,0.1)_60%,transparent_100%)]" />
 
                     <div className="relative z-10 max-w-[640px] w-full flex flex-col items-center sm:items-start text-center sm:text-left transition-all duration-[1200ms] ease-out">
-                        <div className="mb-6 text-[0.95rem] md:text-[1.05rem] uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#9A7A40] leading-loose">Two souls, one beautiful journey.<br/>Join us as we step into our forever.</div>
+                        <div className="mb-6 text-[0.95rem] md:text-[1.05rem] uppercase tracking-[0.2em] md:tracking-[0.3em] text-[#9A7A40] leading-loose">Two souls, one beautiful journey.<br />Join us as we step into our forever.</div>
                         <h1 className="m-0 mb-[0.35em] font-['Cormorant_Garamond'] text-[clamp(3.6rem,10.2vw,6.8rem)] font-medium leading-[1.05] text-[#8B1A30] drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
                             Ananya <em className="my-1.5 block text-[0.58em] font-normal italic tracking-[0.08em] text-[#5C2030]">&amp;</em> Arjun
                         </h1>
                         <div className="mb-2 text-[1.45rem] md:text-[1.6rem] uppercase tracking-[0.14em] text-[#3E1620]">Wedding &amp; Love Reveal</div>
-                        <div className="text-[1.18rem] md:text-[1.3rem] italic text-[#5C2030]">Scroll down and touch the hearts to reveal the day our forever begins</div>
-                    </div>
-
-                    <div className="absolute bottom-[6vh] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 opacity-70 transition-opacity duration-[1000ms]">
-                        <div className="h-[34px] w-px origin-top bg-[#8B1A30] [animation:scrollDown_1.8s_ease-in-out_infinite]" />
-                        <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#8B1A30]">Scroll</span>
                     </div>
 
                 </section>
@@ -242,8 +236,8 @@ export default function App() {
                 <Venue />
                 <Footer />
 
-            <FlyingParrot />
-        </div>
+                <FlyingParrot />
+            </div>
         </>
     );
 }

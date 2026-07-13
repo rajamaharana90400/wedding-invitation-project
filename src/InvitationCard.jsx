@@ -45,11 +45,28 @@ export default function InvitationCard() {
   return (
     <section
       ref={containerRef}
-      className="relative px-4 md:px-8 section-bg-light flex flex-col items-center justify-center min-h-screen"
+      className="relative px-4 md:px-8 flex flex-col items-center justify-center min-h-screen"
       id="invitation"
-      style={{ paddingTop: '6rem', paddingBottom: '8rem' }}
+      style={{
+        paddingTop: '10rem',
+        paddingBottom: '8rem',
+        marginTop: '-80px',
+        borderRadius: '50% 50% 0 0 / 80px 80px 0 0',
+        position: 'relative',
+        zIndex: 6,
+        overflow: 'hidden',
+      }}
     >
-      <SectionDecorations />
+      {/* Background Image for Invitation Section */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        <img
+          src="/invited_bg_desktop.jpg"
+          alt=""
+          className="w-full h-full object-cover"
+          draggable={false}
+          style={{ opacity: 1, mixBlendMode: 'normal' }}
+        />
+      </div>
 
       <div className="max-w-5xl w-full mx-auto relative z-10 flex flex-col items-center">
 
@@ -245,8 +262,6 @@ export default function InvitationCard() {
           </div>
         </motion.div>
       </div>
-
-      {/* Curved Divider at the bottom removed to allow seamless cherry blossom flow */}
     </section>
   );
 }

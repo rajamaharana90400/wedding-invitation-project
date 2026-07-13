@@ -33,7 +33,15 @@ export default function Footer() {
   return (
     <footer
       ref={ref}
-      className="relative pt-20 pb-10 px-4 md:px-8 text-center overflow-hidden section-bg-light"
+      className="relative px-4 md:px-8 text-center overflow-hidden section-bg-light"
+      style={{
+        paddingTop: '140px',
+        paddingBottom: '40px',
+        marginTop: '-80px',
+        borderRadius: '50% 50% 0 0 / 80px 80px 0 0',
+        position: 'relative',
+        zIndex: 8,
+      }}
     >
       <SectionDecorations />
 
