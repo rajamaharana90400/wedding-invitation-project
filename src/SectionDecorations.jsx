@@ -1,8 +1,8 @@
 /**
- * SectionDecorations – Cherry blossom frame overlay using backside.png.
+ * SectionDecorations – decorative flower frame overlay.
  * Place as the FIRST child inside any relative + overflow-hidden section.
- * Uses mix-blend-mode: multiply so white areas become transparent,
- * and z-index is not set so content renders on top via DOM order.
+ * The overlay uses a soft multiply blend so the floral artwork appears
+ * behind the content without overpowering it.
  */
 export default function SectionDecorations() {
   return (
@@ -13,10 +13,8 @@ export default function SectionDecorations() {
         inset: 0,
         pointerEvents: 'none',
         overflow: 'hidden',
-        /* No zIndex — follows natural DOM paint order so content renders on top */
       }}
     >
-      {/* Cherry blossom frame — covers the entire section */}
       <picture>
         <source media="(min-width: 768px)" srcSet="/desktop.png" />
         <img
@@ -27,10 +25,10 @@ export default function SectionDecorations() {
             inset: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'fill',        /* stretch to fill full section size */
+            objectFit: 'cover',
             objectPosition: 'center',
-            opacity: 0.85,
-            mixBlendMode: 'multiply', /* white areas become transparent, pink stays */
+            opacity: 0.95,
+            mixBlendMode: 'multiply',
             userSelect: 'none',
             pointerEvents: 'none',
             display: 'block',

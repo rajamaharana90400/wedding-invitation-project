@@ -2,34 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
 import App from './App';
 import './index.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-const lenis = new Lenis({
-    duration: isTouchDevice ? 0.9 : 1.15,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: !isTouchDevice,
-    smoothTouch: true,
-    wheelMultiplier: isTouchDevice ? 0.9 : 1,
-    touchMultiplier: isTouchDevice ? 1.1 : 1.2,
-    infinite: false,
-    gestureOrientation: 'vertical',
-});
-
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-
-requestAnimationFrame(raf);
-
-lenis.on('scroll', () => ScrollTrigger.update());
 
 if (!prefersReducedMotion) {
     const sections = gsap.utils.toArray('section');

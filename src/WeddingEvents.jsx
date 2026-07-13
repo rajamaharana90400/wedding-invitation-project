@@ -5,11 +5,11 @@ import FloatingRosePetals from './FloatingRosePetals';
 
 // Premium muted Indian wedding flower color palette
 const SaffronOrange = '#E5A93C'; // Warm golden saffron
-const GoldenYellow  = '#F3D078'; // Soft light yellow
-const PaleGold      = '#FFE082'; // Center dot pale gold
-const CrimsonRose   = '#A8223B'; // Luxury deep crimson rose
-const SageGreen     = '#7A9A60'; // Soft muted green leaf
-const GoldenThread  = '#C9A96E'; // Dashed garland thread
+const GoldenYellow = '#F3D078'; // Soft light yellow
+const PaleGold = '#FFE082'; // Center dot pale gold
+const CrimsonRose = '#A8223B'; // Luxury deep crimson rose
+const SageGreen = '#7A9A60'; // Soft muted green leaf
+const GoldenThread = '#C9A96E'; // Dashed garland thread
 
 const events = [
   {
@@ -148,6 +148,25 @@ function EventTimelineCard({ ev, index, dotRef }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-160px' });
   const isLeft = index % 2 === 0;
+  const [isPressed, setIsPressed] = useState(false);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const triggerPress = () => {
+    setIsPressed(true);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setIsPressed(false), 900);
+  };
+
+  const clearPress = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsPressed(false);
+  };
 
   return (
     <div
@@ -156,9 +175,8 @@ function EventTimelineCard({ ev, index, dotRef }) {
     >
       {/* Event Circular Card Container */}
       <div
-        className={`relative col-start-2 justify-self-center flex flex-col items-center event-card-wrap ${
-          isLeft ? 'md:col-start-1' : 'md:col-start-3'
-        }`}
+        className={`relative col-start-2 justify-self-center flex flex-col items-center event-card-wrap ${isLeft ? 'md:col-start-1' : 'md:col-start-3'
+          }`}
       >
         <motion.div
           initial={{ opacity: 0, x: isLeft ? -80 : 80 }}
@@ -170,9 +188,21 @@ function EventTimelineCard({ ev, index, dotRef }) {
             borderColor: ev.border,
             zIndex: 20,
           }}
-          className={`relative rounded-full p-8 overflow-hidden cursor-pointer premium-shadow flex flex-col items-center justify-center text-center event-card-circle group ${
-            index % 2 === 0 ? 'animate-event-float-odd' : 'animate-event-float-even'
-          }`}
+          whileTap={{
+            scale: 1.04,
+            boxShadow: `0 20px 48px rgba(0,0,0,0.15), 0 0 24px ${ev.border}70`,
+            borderColor: ev.border,
+            zIndex: 20,
+          }}
+          onPointerDown={triggerPress}
+          onPointerUp={clearPress}
+          onPointerLeave={clearPress}
+          onPointerCancel={clearPress}
+          onTouchStart={triggerPress}
+          onTouchEnd={clearPress}
+          onTouchCancel={clearPress}
+          className={`relative rounded-full p-8 overflow-hidden cursor-pointer premium-shadow flex flex-col items-center justify-center text-center event-card-circle group ${index % 2 === 0 ? 'animate-event-float-odd' : 'animate-event-float-even'
+            }`}
           style={{
             borderWidth: '2px',
             borderStyle: 'solid',
@@ -180,29 +210,34 @@ function EventTimelineCard({ ev, index, dotRef }) {
             width: 'clamp(290px, 82vw, 350px)',
             height: 'clamp(290px, 82vw, 350px)',
             transition: 'border-color 0.4s, box-shadow 0.4s',
+            touchAction: 'manipulation',
           }}
         >
           {/* Background image container enabling independent hover zoom */}
           <div
-            className="absolute inset-0 transition-transform duration-700 ease-out scale-100 group-hover:scale-110 pointer-events-none"
+            className="absolute inset-0 transition-transform duration-700 ease-out scale-100 pointer-events-none"
             style={{
               backgroundImage: `url(${ev.bgImage})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              transform: isPressed ? 'scale(1.10)' : 'scale(1.0)',
+              transition: 'transform 0.7s ease-out',
             }}
           />
           {/* Soft light pastel gradient overlay */}
           <div
-            className="absolute inset-0 opacity-95 group-hover:opacity-88 transition-opacity duration-500 pointer-events-none"
+            className="absolute inset-0 opacity-95 transition-opacity duration-500 pointer-events-none"
             style={{
               background: getOverlayGradient(ev.id),
+              opacity: isPressed ? 0.88 : 0.95,
             }}
           />
           {/* Golden hover radial gradient */}
           <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
             style={{
               background: `radial-gradient(circle at 50% 50%, ${ev.border}30 0%, transparent 80%)`,
+              opacity: isPressed ? 1 : 0,
             }}
           />
 
@@ -456,59 +491,59 @@ export default function WeddingEvents() {
       {/* Content wrapper — renders above the decoration image */}
       <div style={{ position: 'relative', zIndex: 1 }}>
 
-      {/* Section Header */}
-      <div className="text-center mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="section-label mb-4"
-          style={{ color: '#9A7A40' }}
-        >
-          Celebrations Await
-        </motion.div>
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-serif-wedding text-4xl md:text-6xl mb-4"
-          style={{ color: '#3E1620', fontWeight: 400 }}
-        >
-          Wedding Events
-        </motion.h2>
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={inView ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="gold-divider"
-          style={{
-            background: 'linear-gradient(90deg, transparent, #C9A96E, transparent)',
-          }}
-        />
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-6 text-[1.05rem] md:text-[1.2rem] max-w-lg mx-auto"
-          style={{ color: '#3E1620', fontFamily: 'Montserrat, sans-serif' }}
-        >
-          Six ceremonies, six celebrations, one unforgettable week.
-          Join us for every magical moment.
-        </motion.p>
-      </div>
-
-      {/* Timeline Layout */}
-      <div ref={timelineRef} className="relative max-w-3xl mx-auto">
-        <FlowerVineLine top={lineCoords.top} height={lineCoords.height} />
-        {events.map((ev, i) => (
-          <EventTimelineCard
-            key={ev.id}
-            ev={ev}
-            index={i}
-            dotRef={i === 0 ? dot1Ref : i === events.length - 1 ? dot6Ref : null}
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="section-label mb-4"
+            style={{ color: '#9A7A40' }}
+          >
+            Celebrations Await
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="font-serif-wedding text-4xl md:text-6xl mb-4"
+            style={{ color: '#3E1620', fontWeight: 400 }}
+          >
+            Wedding Events
+          </motion.h2>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={inView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="gold-divider"
+            style={{
+              background: 'linear-gradient(90deg, transparent, #C9A96E, transparent)',
+            }}
           />
-        ))}
-      </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="mt-6 text-[1.05rem] md:text-[1.2rem] max-w-lg mx-auto"
+            style={{ color: '#3E1620', fontFamily: 'Montserrat, sans-serif' }}
+          >
+            Six ceremonies, six celebrations, one unforgettable week.
+            Join us for every magical moment.
+          </motion.p>
+        </div>
+
+        {/* Timeline Layout */}
+        <div ref={timelineRef} className="relative max-w-3xl mx-auto">
+          <FlowerVineLine top={lineCoords.top} height={lineCoords.height} />
+          {events.map((ev, i) => (
+            <EventTimelineCard
+              key={ev.id}
+              ev={ev}
+              index={i}
+              dotRef={i === 0 ? dot1Ref : i === events.length - 1 ? dot6Ref : null}
+            />
+          ))}
+        </div>
 
       </div>{/* end content wrapper */}
 

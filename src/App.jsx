@@ -30,7 +30,6 @@ export default function App() {
         } else {
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
-            // Instantly snap to the top of the page when curtain animation ends
             window.scrollTo({ top: 0, behavior: 'instant' });
         }
         return () => {
@@ -41,7 +40,6 @@ export default function App() {
 
     return (
         <>
-            {/* Video Intro — plays once on page load, then removes itself */}
             <VideoIntro onComplete={() => setIntroFinished(true)} />
 
             <div
