@@ -239,6 +239,24 @@ body,
   background: linear-gradient(160deg, #FFF0F2 0%, #FFD6E0 50%, #FFBBD0 100%);
 }
 
+/* When lightbox is open, hide decorative overlays that sit in sections */
+body.lightbox-open .section-decorations {
+  display: none !important;
+}
+
+/* Also hide other global background effects while lightbox is open */
+body.lightbox-open .background-effects,
+body.lightbox-open .floating-petals,
+body.lightbox-open canvas {
+  display: none !important;
+}
+
+/* Prevent any horizontal scroll while lightbox is active */
+body.lightbox-open {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+}
+
 .premium-shadow {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(201, 169, 110, 0.1);
 }

@@ -29,7 +29,7 @@ function Lightbox({ photo, onClose }) {
           style={{ background: 'rgba(10,0,8,0.92)', backdropFilter: 'blur(12px)', touchAction: 'none' }}
           onClick={onClose}
           onWheel={(e) => e.stopPropagation()}
-          onTouchMove={(e) => e.preventDefault()}
+          onTouchMove={(e) => e.stopPropagation()}
         >
           <motion.div
             initial={{ scale: 0.85, opacity: 0 }}
@@ -44,7 +44,7 @@ function Lightbox({ photo, onClose }) {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={photo.src}
+              src={photo.src && (photo.src.startsWith('http') ? photo.src : encodeURI('/' + photo.src))}
               alt={photo.alt}
               className="w-full h-full object-cover max-h-[80vh]"
             />
@@ -103,7 +103,7 @@ function GalleryCard({ photo, index, onClick }) {
       onClick={() => onClick(photo)}
     >
       <img
-        src={photo.src}
+        src={photo.src && (photo.src.startsWith('http') ? photo.src : encodeURI('/' + photo.src))}
         alt={photo.alt}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         style={{ minHeight: photo.span ? 320 : 200 }}
@@ -163,6 +163,42 @@ export default function CoupleGallery() {
     return () => {
       document.body.style.overflow = originalBodyOverflow;
       document.documentElement.style.overflow = originalHtmlOverflow;
+    };
+  }, [lightbox]);
+
+  // Also toggle a body class so global decorations can be hidden via CSS
+  useEffect(() => {
+    try {
+      if (lightbox) {
+        document.body.classList.add('lightbox-open');
+      } else {
+        document.body.classList.remove('lightbox-open');
+      }
+    } catch (err) {
+      // ignore during SSR or if document isn't available
+    }
+    return () => {
+      try {
+        document.body.classList.remove('lightbox-open');
+      } catch (e) { }
+    };
+  }, [lightbox]);
+
+  // Hide page sections (e.g., countdown) when lightbox is open to prevent them
+  // from peeking through on some devices or z-index contexts.
+  useEffect(() => {
+    const el = document.getElementById('countdown');
+    if (!el) return undefined;
+
+    const originalDisplay = el.style.display;
+    if (lightbox) {
+      el.style.display = 'none';
+    } else {
+      el.style.display = originalDisplay || '';
+    }
+
+    return () => {
+      el.style.display = originalDisplay || '';
     };
   }, [lightbox]);
 

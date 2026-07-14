@@ -281,7 +281,19 @@ export default function Footer() {
           className="text-[0.82rem] md:text-[0.92rem] font-medium"
           style={{ color: 'rgba(92, 32, 48, 0.8)', fontFamily: 'Montserrat, sans-serif' }}
         >
-          Crafted by Tekkzy — AI-Powered Intelligent Cloud Solutions
+          <a
+            href="https://tekkzy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: '#8B1A30',
+              textDecoration: 'underline',
+              fontWeight: 600,
+            }}
+          >
+            Crafted by Tekkzy
+          </a>
+          {' '}— AI-Powered Intelligent Cloud Solutions
         </motion.p>
       </div>
     </footer>

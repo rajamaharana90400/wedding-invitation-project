@@ -8,6 +8,7 @@ export default function SectionDecorations() {
   return (
     <div
       aria-hidden
+      className="section-decorations"
       style={{
         position: 'absolute',
         inset: 0,

@@ -169,13 +169,13 @@ function BackgroundEffects() {
         prev.map((b) => {
           const nextX = Math.random() * 90 + 5; // 5% to 95%
           const nextY = Math.random() * 80 + 10; // 10% to 90%
-          
+
           // Calculate angle relative to previous position
           const dx = nextX - b.x;
           const dy = nextY - b.y;
           // Math.atan2 gives radians, convert to degrees
           let angleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
-          
+
           // Normalize angle to avoid sharp spins
           if (angleDeg - b.angle > 180) angleDeg -= 360;
           if (b.angle - angleDeg > 180) angleDeg += 360;
@@ -218,58 +218,60 @@ function BackgroundEffects() {
   }));
 
   return (
-    <>
-      <PetalCanvas />
+    <div className="background-effects" aria-hidden>
+      <>
+        <PetalCanvas />
 
-      {/* Butterflies */}
-      {butterflies.map((b) => (
-        <div
-          key={b.id}
-          aria-hidden
-          style={{
-            position: 'fixed',
-            left: `${b.x}vw`,
-            top: `${b.y}vh`,
-            transform: `translate(-50%, -50%) rotate(${b.angle}deg)`,
-            transition: 'left 10s ease-in-out, top 10s ease-in-out, transform 4s ease-in-out',
-            pointerEvents: 'none',
-            zIndex: 40,
-            opacity: 0.8,
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <ButterflyWing color={b.color} flip={false} />
-          <ButterflyWing color={b.color} flip />
-        </div>
-      ))}
+        {/* Butterflies */}
+        {butterflies.map((b) => (
+          <div
+            key={b.id}
+            aria-hidden
+            style={{
+              position: 'fixed',
+              left: `${b.x}vw`,
+              top: `${b.y}vh`,
+              transform: `translate(-50%, -50%) rotate(${b.angle}deg)`,
+              transition: 'left 10s ease-in-out, top 10s ease-in-out, transform 4s ease-in-out',
+              pointerEvents: 'none',
+              zIndex: 40,
+              opacity: 0.8,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <ButterflyWing color={b.color} flip={false} />
+            <ButterflyWing color={b.color} flip />
+          </div>
+        ))}
 
-      {/* Sparkles */}
-      {sparkles.map((s) => (
-        <Sparkle
-          key={s.id}
-          style={{
-            top: s.top,
-            left: s.left,
-            animationDelay: s.delay,
-            animationDuration: s.duration,
-          }}
-        />
-      ))}
+        {/* Sparkles */}
+        {sparkles.map((s) => (
+          <Sparkle
+            key={s.id}
+            style={{
+              top: s.top,
+              left: s.left,
+              animationDelay: s.delay,
+              animationDuration: s.duration,
+            }}
+          />
+        ))}
 
-      {/* Hearts */}
-      {hearts.map((h) => (
-        <FloatingHeart
-          key={h.id}
-          style={{
-            top: h.top,
-            right: h.right,
-            animationDelay: h.delay,
-            animationDuration: h.duration,
-          }}
-        />
-      ))}
-    </>
+        {/* Hearts */}
+        {hearts.map((h) => (
+          <FloatingHeart
+            key={h.id}
+            style={{
+              top: h.top,
+              right: h.right,
+              animationDelay: h.delay,
+              animationDuration: h.duration,
+            }}
+          />
+        ))}
+      </>
+    </div>
   );
 }
 
