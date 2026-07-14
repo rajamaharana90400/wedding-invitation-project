@@ -392,9 +392,10 @@ export default function ScratchReveal() {
           margin: '0 auto',
           borderRadius: 20,
           padding: '24px 32px',
+          minHeight: 160,
           background: allRevealed ? 'rgba(192,21,42,0.06)' : 'transparent',
           border: allRevealed ? '1px solid rgba(192,21,42,0.2)' : '1px solid transparent',
-          transition: 'all 0.6s ease',
+          transition: 'background 0.6s ease, border 0.6s ease',
         }}
       >
         {allRevealed ? (

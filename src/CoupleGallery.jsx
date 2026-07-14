@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
 
@@ -26,8 +26,10 @@ function Lightbox({ photo, onClose }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-          style={{ background: 'rgba(10,0,8,0.92)', backdropFilter: 'blur(12px)' }}
+          style={{ background: 'rgba(10,0,8,0.92)', backdropFilter: 'blur(12px)', touchAction: 'none' }}
           onClick={onClose}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.preventDefault()}
         >
           <motion.div
             initial={{ scale: 0.85, opacity: 0 }}
@@ -148,6 +150,21 @@ export default function CoupleGallery() {
   const [lightbox, setLightbox] = useState(null);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
+
+  useEffect(() => {
+    if (!lightbox) return undefined;
+
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+    };
+  }, [lightbox]);
 
   return (
     <section

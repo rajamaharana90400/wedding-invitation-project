@@ -32,6 +32,8 @@ export default function SectionDecorations() {
             userSelect: 'none',
             pointerEvents: 'none',
             display: 'block',
+            transform: 'none',
+            transition: 'none',
           }}
           draggable={false}
         />
