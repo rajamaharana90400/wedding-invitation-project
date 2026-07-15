@@ -97,7 +97,7 @@ export default function Venue() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="section-label mb-4"
-            style={{ color: '#9A7A40' }}
+            style={{ color: '#000000', fontWeight: 700 }}
           >
             Where It All Happens
           </motion.div>
@@ -193,23 +193,24 @@ export default function Venue() {
 
             {/* Address Card */}
             <div
-              className="rounded-2xl p-5"
+              className="rounded-3xl p-6 shadow-lg"
               style={{
-                background: 'rgba(201,169,110,0.06)',
-                border: '1px solid rgba(201,169,110,0.2)',
+                background: 'rgba(237, 71, 154, 0.18)',
+                border: '1px solid rgba(0,0,0,0.08)',
+                boxShadow: '0 18px 40px rgba(0, 0, 0, 0.08)',
               }}
             >
               <div className="flex items-start gap-3">
                 <div>
                   <div
-                    className="font-medium text-sm mb-1"
-                    style={{ color: '#3E1620', fontFamily: 'Montserrat, sans-serif' }}
+                    className="font-bold text-sm mb-1"
+                    style={{ color: '#000000', fontFamily: 'Montserrat, sans-serif' }}
                   >
                     Address
                   </div>
                   <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: '#5C3040', fontFamily: 'Montserrat, sans-serif' }}
+                    className="text-sm leading-relaxed font-semibold"
+                    style={{ color: '#000000', fontFamily: 'Montserrat, sans-serif' }}
                   >
                     The Rose Garden Estate,<br />
                     Near City Palace, Lake Pichola,<br />
@@ -220,7 +221,11 @@ export default function Venue() {
             </div>
 
             {/* Info chips */}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 rounded-3xl p-4"
+              style={{
+                background: 'rgba(255,255,255,0.55)',
+                border: '1px solid rgba(0,0,0,0.06)',
+              }}>
               {[
                 { text: 'February 14, 2027' },
                 { text: '10:00 AM Onwards' },
@@ -228,11 +233,11 @@ export default function Venue() {
               ].map((chip) => (
                 <div
                   key={chip.text}
-                  className="flex items-center gap-2 px-3 py-2 rounded-full text-xs"
+                  className="flex items-center gap-2 px-3 py-2 rounded-full text-xs font-semibold"
                   style={{
-                    background: 'rgba(201,169,110,0.1)',
+                    background: '#ffffff',
                     border: '1px solid rgba(201,169,110,0.25)',
-                    color: '#5C3040',
+                    color: '#000000',
                     fontFamily: 'Montserrat, sans-serif',
                   }}
                 >
