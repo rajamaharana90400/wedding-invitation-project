@@ -251,6 +251,12 @@ body.lightbox-open canvas {
   display: none !important;
 }
 
+/* Hide the rest of the page content while lightbox is active */
+body.lightbox-open>*:not(.lightbox-portal) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* Prevent any horizontal scroll while lightbox is active */
 body.lightbox-open {
   overflow: hidden !important;

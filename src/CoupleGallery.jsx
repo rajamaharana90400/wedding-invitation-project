@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
 
@@ -17,7 +18,7 @@ const PHOTOS = [
 ];
 
 function Lightbox({ photo, onClose }) {
-  return (
+  return createPortal(
     <AnimatePresence>
       {photo && (
         <motion.div
@@ -25,8 +26,8 @@ function Lightbox({ photo, onClose }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-          style={{ background: 'rgba(10,0,8,0.92)', backdropFilter: 'blur(12px)', touchAction: 'none' }}
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-4 lightbox-portal"
+          style={{ background: 'rgba(10,0,8,0.95)', backdropFilter: 'blur(12px)', touchAction: 'none' }}
           onClick={onClose}
           onWheel={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
@@ -80,7 +81,8 @@ function Lightbox({ photo, onClose }) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
 
