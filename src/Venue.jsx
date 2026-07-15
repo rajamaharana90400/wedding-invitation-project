@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import details from '../details.json';
 import { motion, useInView } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
 
@@ -133,7 +134,7 @@ export default function Venue() {
           >
             <img
               src="/venue.jpg"
-              alt="The Rose Garden Estate venue"
+              alt={`${details.wedding.location.venue} venue`}
               className="w-full h-full object-cover"
               loading="lazy"
               style={{ filter: 'sepia(25%) saturate(85%) brightness(0.9)' }}
@@ -168,7 +169,7 @@ export default function Venue() {
                 className="font-serif-wedding text-3xl md:text-4xl mb-2"
                 style={{ color: '#3E1620', fontWeight: 500 }}
               >
-                The Rose Garden Estate
+                {details.wedding.location.venue}
               </h3>
               <div className="gold-divider mb-4" style={{ margin: '0', width: 60, background: 'linear-gradient(90deg, #C9A96E, transparent)' }} />
               <div
@@ -184,9 +185,7 @@ export default function Venue() {
                   className="text-sm md:text-base font-semibold leading-relaxed block"
                   style={{ color: '#1F0D11', fontFamily: 'Montserrat, sans-serif', textShadow: '0 1px 2px rgba(255,255,255,0.4)' }}
                 >
-                  Nestled on the banks of Lake Pichola, this palatial estate has witnessed centuries of love stories.
-                  With majestic archways, blooming rose gardens, and breathtaking lake views, it is the perfect setting
-                  for your most magical memories.
+                  {details.wedding.venueDescription}
                 </span>
               </div>
             </div>
@@ -212,9 +211,12 @@ export default function Venue() {
                     className="text-sm leading-relaxed font-semibold"
                     style={{ color: '#000000', fontFamily: 'Montserrat, sans-serif' }}
                   >
-                    The Rose Garden Estate,<br />
-                    Near City Palace, Lake Pichola,<br />
-                    Udaipur, Rajasthan 313001
+                    {details.wedding.location.address.split(',').map((line, index) => (
+                      <span key={index}>
+                        {line.trim()}
+                        {index < details.wedding.location.address.split(',').length - 1 ? <br /> : null}
+                      </span>
+                    ))}
                   </p>
                 </div>
               </div>
@@ -227,8 +229,8 @@ export default function Venue() {
                 border: '1px solid rgba(0,0,0,0.06)',
               }}>
               {[
-                { text: 'February 14, 2027' },
-                { text: '10:00 AM Onwards' },
+                { text: details.wedding.date },
+                { text: details.wedding.time + ' Onwards' },
                 { text: 'Valet Parking Available' },
               ].map((chip) => (
                 <div

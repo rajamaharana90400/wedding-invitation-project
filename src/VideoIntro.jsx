@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import details from '../details.json';
 
 export default function VideoIntro({ onComplete }) {
     // 'waiting' = closed curtains, click to start | 'playing' = curtains opening | 'fading' | 'done'
@@ -97,12 +98,12 @@ export default function VideoIntro({ onComplete }) {
             >
                 <img
                     src="/happymoment.jpg"
-                    alt="Ananya & Arjun"
+                    alt={details.couple.fullNames}
                     className="video-intro-couple-img"
                 />
                 <div className="video-intro-vignette" />
                 <div className="video-intro-names">
-                    <div className="video-intro-names-text">Ananya &amp; Arjun</div>
+                    <div className="video-intro-names-text">{details.couple.fullNames}</div>
                     <div className="video-intro-names-sub">We Are Getting Married</div>
                 </div>
             </div>

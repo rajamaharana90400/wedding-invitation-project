@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import details from '../details.json';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
 
-const WEDDING_DATE = new Date('2027-02-14T10:00:00');
+const WEDDING_DATE = new Date(details.wedding.dateTime);
 
 function getTimeLeft() {
   const now = new Date();
@@ -181,7 +182,7 @@ export default function CountdownTimer() {
           className="mt-6 text-[1.05rem] md:text-[1.2rem] italic"
           style={{ color: '#000', fontFamily: 'Montserrat, sans-serif' }}
         >
-          February 14, 2027 · Udaipur, Rajasthan
+          {details.site.saveTheDateText}
         </p>
       </motion.div>
 

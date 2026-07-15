@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
 import FloatingRosePetals from './FloatingRosePetals';
+import details from '../details.json';
 
 // Premium muted Indian wedding flower color palette
 const SaffronOrange = '#E5A93C'; // Warm golden saffron
@@ -11,74 +12,49 @@ const CrimsonRose = '#A8223B'; // Luxury deep crimson rose
 const SageGreen = '#7A9A60'; // Soft muted green leaf
 const GoldenThread = '#C9A96E'; // Dashed garland thread
 
-const events = [
-  {
-    id: 'welcome',
-    name: 'Welcome Dinner',
-    date: 'February 10, 2027',
-    time: '7:00 PM – 10:00 PM',
-    venue: 'The Palace Gardens, Udaipur',
+const eventMeta = {
+  welcome: {
     desc: 'Join us for a warm, intimate dinner under the stars as we welcome our beloved guests to kickstart the celebrations.',
     color: 'from-amber-900/40 to-yellow-900/30',
     border: '#fbbf24',
     bgImage: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&q=80&w=600',
   },
-  {
-    id: 'mehendi',
-    name: 'Mehendi',
-    date: 'February 11, 2027',
-    time: '4:00 PM – 9:00 PM',
-    venue: 'The Bougainvillea Garden, Udaipur',
+  mehendi: {
     desc: 'An evening of laughter, henna, music, and vibrant colors as the bride\'s hands bloom into art.',
     color: 'from-green-900/40 to-emerald-900/30',
     border: '#6ee7b7',
     bgImage: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=600',
   },
-  {
-    id: 'haldi',
-    name: 'Haldi',
-    date: 'February 12, 2027',
-    time: '10:00 AM – 1:00 PM',
-    venue: 'The Family Courtyard, Udaipur',
+  haldi: {
     desc: 'A sacred golden ritual — turmeric blessings poured with love, laughter, and pure happiness.',
     color: 'from-yellow-900/40 to-amber-900/30',
     border: '#fbbf24',
     bgImage: 'https://images.unsplash.com/photo-1605001011156-cbf0b0f67a51?auto=format&fit=crop&q=80&w=600',
   },
-  {
-    id: 'sangeet',
-    name: 'Sangeet',
-    date: 'February 12, 2027',
-    time: '7:00 PM – 11:30 PM',
-    venue: 'The Lakeside Amphitheatre, Udaipur',
+  sangeet: {
     desc: 'Dance, music, and celebration under the stars. A night where two families become one through rhythm.',
     color: 'from-purple-900/40 to-violet-900/30',
     border: '#c084fc',
     bgImage: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=600',
   },
-  {
-    id: 'wedding',
-    name: 'Wedding Ceremony',
-    date: 'February 14, 2027',
-    time: '10:00 AM',
-    venue: 'The Rose Garden Estate, Udaipur',
+  wedding: {
     desc: 'The sacred union of two souls. Seven vows, seven steps, and a lifetime of love begins today.',
     color: 'from-rose-900/40 to-pink-900/30',
     border: '#f43f5e',
     bgImage: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600',
   },
-  {
-    id: 'reception',
-    name: 'Reception',
-    date: 'February 14, 2027',
-    time: '6:30 PM – 11:00 PM',
-    venue: 'The Grand Ballroom, Palace Hotel, Udaipur',
+  reception: {
     desc: 'An elegant evening to celebrate the newlyweds with champagne, fine dining, and joyful company.',
     color: 'from-sky-900/40 to-blue-900/30',
     border: '#60a5fa',
     bgImage: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=600',
   },
-];
+};
+
+const events = details.events.map((event) => ({
+  ...event,
+  ...eventMeta[event.id],
+}));
 
 function FlowerVineLine({ top, height }) {
   return (

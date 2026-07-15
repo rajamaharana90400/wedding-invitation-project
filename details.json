@@ -1,0 +1,76 @@
+{
+    "couple": {
+        "bride": "Ananya",
+        "groom": "Arjun",
+        "fullNames": "Ananya & Arjun"
+    },
+    "wedding": {
+        "date": "February 14, 2027",
+        "day": "Saturday",
+        "time": "8:00 A.M.",
+        "dateTime": "2027-02-14T10:00:00",
+        "location": {
+            "venue": "The Rose Garden Estate",
+            "city": "Udaipur",
+            "state": "Rajasthan",
+            "postalCode": "313001",
+            "address": "The Rose Garden Estate, Near City Palace, Lake Pichola, Udaipur, Rajasthan 313001"
+        },
+        "locationSummary": "Udaipur, Rajasthan",
+        "venueDescription": "Nestled on the banks of Lake Pichola, this palatial estate has witnessed centuries of love stories. With majestic archways, blooming rose gardens, and breathtaking lake views, it is the perfect setting for your most magical memories.",
+        "invitedBy": "Sri & Smt. Maharana Family"
+    },
+    "events": [
+        {
+            "id": "welcome",
+            "name": "Welcome Dinner",
+            "date": "February 10, 2027",
+            "time": "7:00 PM – 10:00 PM",
+            "venue": "The Palace Gardens, Udaipur"
+        },
+        {
+            "id": "mehendi",
+            "name": "Mehendi",
+            "date": "February 11, 2027",
+            "time": "4:00 PM – 9:00 PM",
+            "venue": "The Bougainvillea Garden, Udaipur"
+        },
+        {
+            "id": "haldi",
+            "name": "Haldi",
+            "date": "February 12, 2027",
+            "time": "10:00 AM – 1:00 PM",
+            "venue": "The Family Courtyard, Udaipur"
+        },
+        {
+            "id": "sangeet",
+            "name": "Sangeet",
+            "date": "February 12, 2027",
+            "time": "7:00 PM – 11:30 PM",
+            "venue": "The Lakeside Amphitheatre, Udaipur"
+        },
+        {
+            "id": "wedding",
+            "name": "Wedding Ceremony",
+            "date": "February 14, 2027",
+            "time": "10:00 AM",
+            "venue": "The Rose Garden Estate, Udaipur"
+        },
+        {
+            "id": "reception",
+            "name": "Reception",
+            "date": "February 14, 2027",
+            "time": "6:30 PM – 11:00 PM",
+            "venue": "The Grand Ballroom, Palace Hotel, Udaipur"
+        }
+    ],
+    "site": {
+        "invitationTitle": "Maharana's Wedding Invitation",
+        "sectionLabels": [
+            "You Are Invited",
+            "Where It All Happens",
+            "The Venue"
+        ],
+        "saveTheDateText": "February 14, 2027 · Udaipur, Rajasthan"
+    }
+}

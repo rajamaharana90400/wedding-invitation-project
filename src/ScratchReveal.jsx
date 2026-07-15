@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import details from '../details.json';
 import SectionDecorations from './SectionDecorations';
 
 /* ── Helper ──────────────────────────────────────────────── */
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
+const weddingDate = new Date(details.wedding.dateTime);
 const DATE_PARTS = [
-  { id: 'day', label: 'Day', value: '14', sub: 'Saturday' },
-  { id: 'month', label: 'Month', value: 'February', sub: '2nd Month' },
-  { id: 'year', label: 'Year', value: '2027', sub: 'A New Beginning' },
+  { id: 'day', label: 'Day', value: String(weddingDate.getDate()), sub: details.wedding.day || weddingDate.toLocaleString('en-US', { weekday: 'long' }) },
+  { id: 'month', label: 'Month', value: weddingDate.toLocaleString('en-US', { month: 'long' }), sub: `${weddingDate.getMonth() + 1}th Month` },
+  { id: 'year', label: 'Year', value: String(weddingDate.getFullYear()), sub: 'A New Beginning' },
 ];
 
 /* ── Single scratch card ─────────────────────────────────── */
@@ -415,7 +417,7 @@ export default function ScratchReveal() {
                   lineHeight: 1.3,
                 }}
               >
-                Saturday · 14 February 2027
+                {details.wedding.day} · {new Date(details.wedding.dateTime).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
               </div>
               <div
                 style={{
@@ -426,7 +428,7 @@ export default function ScratchReveal() {
                   letterSpacing: '0.1em',
                 }}
               >
-                The Rose Garden Estate · Udaipur, Rajasthan
+                {details.wedding.location.venue} · {details.wedding.locationSummary}
               </div>
               <div
                 style={{

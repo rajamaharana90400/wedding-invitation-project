@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import details from '../details.json';
 import { motion, useInView } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
 
@@ -104,7 +105,7 @@ export default function Footer() {
           className="section-label mb-6 font-bold text-black"
           style={{ color: '#000' }}
         >
-          February 14, 2027 · Udaipur, Rajasthan
+          {details.site.saveTheDateText}
         </motion.div>
 
         <motion.div
@@ -130,7 +131,7 @@ export default function Footer() {
           "Thank you for being part of our journey. Your presence at our wedding means the world to us.
           We look forward to celebrating this beautiful beginning with the ones we love most."
           <br /><br />
-          — With all our love, Ananya &amp; Arjun 💛
+          — With all our love, {details.couple.fullNames} 💛
         </motion.p>
 
         {/* Bottom divider */}

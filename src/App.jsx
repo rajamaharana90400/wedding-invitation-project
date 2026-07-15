@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import details from '../details.json';
 import VideoIntro from './VideoIntro';
 import ScratchReveal from './ScratchReveal';
 import ScrollProgress from './ScrollProgress';
@@ -272,7 +273,7 @@ export default function App() {
                     <div className="relative z-10 max-w-[640px] w-full flex flex-col items-center sm:items-start text-center sm:text-left transition-all duration-[1200ms] ease-out">
                         <div data-animate className="mb-6 text-[1.45rem] md:text-[1.85rem] tracking-[0.03em] text-black font-bold font-['Great_Vibes',cursive] leading-[1.05]">Two souls, one beautiful journey.<br />Join us as we step into our forever.</div>
                         <h1 data-animate className="m-0 mb-[0.35em] font-['Cormorant_Garamond'] text-[clamp(3.6rem,10.2vw,6.8rem)] font-medium leading-[1.05] text-[#8B1A30] drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
-                            Ananya <em className="my-1.5 block text-[0.58em] font-normal italic tracking-[0.08em] text-[#5C2030]">&amp;</em> Arjun
+                            {details.couple.bride} <em className="my-1.5 block text-[0.58em] font-normal italic tracking-[0.08em] text-[#5C2030]">&amp;</em> {details.couple.groom}
                         </h1>
                         <div data-animate className="mb-2 text-[1.45rem] md:text-[1.6rem] uppercase tracking-[0.14em] text-[#3E1620]">Wedding &amp; Love Reveal</div>
                     </div>

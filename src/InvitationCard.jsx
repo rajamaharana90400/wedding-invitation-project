@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import details from '../details.json';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
 
@@ -20,17 +21,17 @@ export default function InvitationCard() {
 
   // ── Card frame animation ──
   const frameOpacity = useTransform(smoothProgress, [0, 0.25], [0, 1]);
-  const frameY      = useTransform(smoothProgress, [0, 0.25], [100, 0]);
-  const frameScale  = useTransform(smoothProgress, [0, 0.25], [0.88, 1]);
+  const frameY = useTransform(smoothProgress, [0, 0.25], [100, 0]);
+  const frameScale = useTransform(smoothProgress, [0, 0.25], [0.88, 1]);
 
   // ── Section heading ──
   const headingOpacity = useTransform(smoothProgress, [0, 0.18], [0, 1]);
-  const headingY       = useTransform(smoothProgress, [0, 0.18], [50, 0]);
+  const headingY = useTransform(smoothProgress, [0, 0.18], [50, 0]);
 
   // ── Text blocks – each staggered ──
   const mkBlock = (start) => ({
     opacity: useTransform(smoothProgress, [start, start + 0.12], [0, 1]),
-    y:       useTransform(smoothProgress, [start, start + 0.12], [40, 0]),
+    y: useTransform(smoothProgress, [start, start + 0.12], [40, 0]),
   });
 
   const t0 = mkBlock(0.22); // Ganesha
@@ -41,6 +42,12 @@ export default function InvitationCard() {
   const t5 = mkBlock(0.57); // Divider 2
   const t6 = mkBlock(0.63); // Venue
   const t7 = mkBlock(0.70); // Invited by
+
+  const weddingDate = new Date(details.wedding.dateTime);
+  const weddingMonth = weddingDate.toLocaleString('en-US', { month: 'long' }).toUpperCase();
+  const weddingDayNumber = weddingDate.getDate();
+  const weddingYear = weddingDate.getFullYear();
+  const weddingDayLabel = details.wedding.day || weddingDate.toLocaleString('en-US', { weekday: 'long' });
 
   return (
     <section
@@ -127,7 +134,7 @@ export default function InvitationCard() {
               </svg>
             </motion.div>
 
-            {/* Maharana's — Wedding Invitation */}
+            {/* Invitation title */}
             <motion.div style={{ opacity: t1.opacity, y: t1.y }} className="text-center">
               <p style={{
                 fontFamily: "'Great Vibes', cursive",
@@ -136,7 +143,7 @@ export default function InvitationCard() {
                 lineHeight: 1.1,
                 marginBottom: '1px',
               }}>
-                Maharana's
+                {details.site.invitationTitle.split(' ')[0]}
               </p>
               <p style={{
                 fontFamily: "'Great Vibes', cursive",
@@ -145,7 +152,7 @@ export default function InvitationCard() {
                 lineHeight: 1,
                 marginBottom: '6px',
               }}>
-                Wedding Invitation
+                {details.site.invitationTitle.replace(`${details.site.invitationTitle.split(' ')[0]} `, '')}
               </p>
             </motion.div>
 
@@ -158,7 +165,7 @@ export default function InvitationCard() {
                 lineHeight: 1.2,
                 marginBottom: '3px',
               }}>
-                Ananya &amp; Arjun
+                {details.couple.fullNames}
               </p>
               <p style={{
                 fontFamily: 'Montserrat, sans-serif',
@@ -185,7 +192,7 @@ export default function InvitationCard() {
                 letterSpacing: '0.14em',
                 color: '#3E1620',
                 marginBottom: '3px',
-              }}>FEBRUARY</p>
+              }}>{weddingMonth}</p>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '3px' }}>
                 <span style={{
                   fontFamily: 'Montserrat, sans-serif',
@@ -194,13 +201,13 @@ export default function InvitationCard() {
                   letterSpacing: '0.06em',
                   borderRight: '1px solid #e0c8c8',
                   paddingRight: '7px',
-                }}>SATURDAY</span>
+                }}>{weddingDayLabel.toUpperCase()}</span>
                 <span style={{
                   fontFamily: "'Great Vibes', cursive",
                   fontSize: 'clamp(1.4rem, 4.5vw, 2rem)',
                   color: '#3E1620',
                   lineHeight: 1,
-                }}>14</span>
+                }}>{weddingDayNumber}</span>
                 <span style={{
                   fontFamily: 'Montserrat, sans-serif',
                   fontSize: 'clamp(0.42rem, 1.2vw, 0.58rem)',
@@ -208,14 +215,14 @@ export default function InvitationCard() {
                   letterSpacing: '0.06em',
                   borderLeft: '1px solid #e0c8c8',
                   paddingLeft: '7px',
-                }}>8:00 A.M.</span>
+                }}>{details.wedding.time}</span>
               </div>
               <p style={{
                 fontFamily: 'Montserrat, sans-serif',
                 fontWeight: 600,
                 fontSize: 'clamp(0.52rem, 1.6vw, 0.72rem)',
                 color: '#3E1620',
-              }}>2027</p>
+              }}>{weddingYear}</p>
             </motion.div>
 
             {/* Gold line 2 */}
@@ -239,7 +246,7 @@ export default function InvitationCard() {
                 color: '#555',
                 lineHeight: 1.5,
                 marginBottom: '6px',
-              }}>Udaipur, Rajasthan</p>
+              }}>{details.wedding.locationSummary}</p>
             </motion.div>
 
             {/* Invited by */}
@@ -256,7 +263,7 @@ export default function InvitationCard() {
                 fontFamily: 'Montserrat, sans-serif',
                 fontSize: 'clamp(0.42rem, 1.3vw, 0.6rem)',
                 color: '#000000',
-              }}>Sri &amp; Smt. Maharana Family</p>
+              }}>{details.wedding.invitedBy}</p>
             </motion.div>
 
           </div>
