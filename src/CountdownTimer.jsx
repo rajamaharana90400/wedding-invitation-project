@@ -179,7 +179,7 @@ export default function CountdownTimer() {
         <div className="gold-divider" />
         <p
           className="mt-6 text-[1.05rem] md:text-[1.2rem] italic"
-          style={{ color: '#3E1620', fontFamily: 'Montserrat, sans-serif' }}
+          style={{ color: '#000', fontFamily: 'Montserrat, sans-serif' }}
         >
           February 14, 2027 · Udaipur, Rajasthan
         </p>

@@ -5,16 +5,16 @@ import SectionDecorations from './SectionDecorations';
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
 const DATE_PARTS = [
-  { id: 'day',   label: 'Day',   value: '14',       sub: 'Saturday' },
+  { id: 'day', label: 'Day', value: '14', sub: 'Saturday' },
   { id: 'month', label: 'Month', value: 'February', sub: '2nd Month' },
-  { id: 'year',  label: 'Year',  value: '2027',     sub: 'A New Beginning' },
+  { id: 'year', label: 'Year', value: '2027', sub: 'A New Beginning' },
 ];
 
 /* ── Single scratch card ─────────────────────────────────── */
-function ScratchCard({ part, revealed, onReveal }) {
+function ScratchCard({ part, revealed, onReveal, onScratchStart }) {
   const canvasRef = useRef(null);
-  const ctxRef    = useRef(null);
-  const downRef   = useRef(false);
+  const ctxRef = useRef(null);
+  const downRef = useRef(false);
   const [particles, setParticles] = useState([]);
 
   /* Init / reset canvas when revealed changes */
@@ -23,10 +23,10 @@ function ScratchCard({ part, revealed, onReveal }) {
     if (!canvas || revealed) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const w   = canvas.offsetWidth;
-    const h   = canvas.offsetHeight;
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
 
-    canvas.width  = w * dpr;
+    canvas.width = w * dpr;
     canvas.height = h * dpr;
 
     const ctx = canvas.getContext('2d');
@@ -34,9 +34,9 @@ function ScratchCard({ part, revealed, onReveal }) {
 
     /* Gold gradient scratch layer */
     const grad = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w * 0.8);
-    grad.addColorStop(0,   '#FFE082');
+    grad.addColorStop(0, '#FFE082');
     grad.addColorStop(0.5, '#C9A96E');
-    grad.addColorStop(1,   '#9A7A40');
+    grad.addColorStop(1, '#9A7A40');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
@@ -78,32 +78,33 @@ function ScratchCard({ part, revealed, onReveal }) {
   const getXY = useCallback((e) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
-    const rect   = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     const source = e.touches ? e.touches[0] : e;
     return {
       x: clamp(source.clientX - rect.left, 0, rect.width),
-      y: clamp(source.clientY - rect.top,  0, rect.height),
+      y: clamp(source.clientY - rect.top, 0, rect.height),
     };
   }, []);
 
   /* Check how much is scratched */
   const checkReveal = useCallback(() => {
     const canvas = canvasRef.current;
-    const ctx    = ctxRef.current;
+    const ctx = ctxRef.current;
     if (!canvas || !ctx) return;
     const { width, height } = canvas;
-    const data  = ctx.getImageData(0, 0, width, height).data;
-    let clear   = 0;
+    const data = ctx.getImageData(0, 0, width, height).data;
+    let clear = 0;
     for (let i = 3; i < data.length; i += 4) if (data[i] === 0) clear++;
     if (clear / (data.length / 4) > 0.35) onReveal();
   }, [onReveal]);
 
   const onDown = useCallback((e) => {
     if (revealed) return;
+    onScratchStart?.();
     downRef.current = true;
     const pt = getXY(e);
     if (pt) scratchAt(pt.x, pt.y);
-  }, [revealed, getXY, scratchAt]);
+  }, [revealed, getXY, scratchAt, onScratchStart]);
 
   const onMove = useCallback((e) => {
     if (!downRef.current || revealed) return;
@@ -292,6 +293,7 @@ function ScratchCard({ part, revealed, onReveal }) {
 /* ── Main component ──────────────────────────────────────── */
 export default function ScratchReveal() {
   const [revealed, setRevealed] = useState({ day: false, month: false, year: false });
+  const [hasStartedScratch, setHasStartedScratch] = useState(false);
   const allRevealed = Object.values(revealed).every(Boolean);
 
   return (
@@ -326,127 +328,131 @@ export default function ScratchReveal() {
       {/* Content wrapper — positioned above the decoration image */}
       <div style={{ position: 'relative', zIndex: 1 }}>
 
-      {/* Section heading */}
-      <div
-        style={{
-          fontSize: '0.72rem',
-          letterSpacing: '0.4em',
-          textTransform: 'uppercase',
-          color: '#9b111e',
-          fontFamily: 'Montserrat, sans-serif',
-          marginBottom: 12,
-          fontWeight: 600,
-        }}
-      >
-        Save the Date
-      </div>
-      <h2
-        style={{
-          fontFamily: 'Cormorant Garamond, serif',
-          fontSize: 'clamp(1.8rem, 5vw, 3rem)',
-          fontWeight: 400,
-          color: '#3E1620',
-          margin: '0 0 6px',
-          lineHeight: 1.15,
-        }}
-      >
-        Scratch to Reveal the Date
-      </h2>
-      <p
-        style={{
-          fontFamily: 'Montserrat, sans-serif',
-          fontSize: 'clamp(0.95rem, 3vw, 1.15rem)',
-          color: 'rgba(155,17,30,0.85)',
-          marginBottom: 48,
-          letterSpacing: '0.05em',
-        }}
-      >
-        Each heart holds a secret — scratch all three to uncover your wedding date.
-      </p>
+        {/* Section heading */}
+        <div
+          style={{
+            fontSize: '0.72rem',
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            color: '#9b111e',
+            fontFamily: 'Montserrat, sans-serif',
+            marginBottom: 12,
+            fontWeight: 600,
+          }}
+        >
+          Save the Date
+        </div>
+        {!hasStartedScratch && (
+          <h2
+            style={{
+              fontFamily: 'Cormorant Garamond, serif',
+              fontSize: 'clamp(1.8rem, 5vw, 3rem)',
+              fontWeight: 400,
+              color: '#3E1620',
+              margin: '0 0 6px',
+              lineHeight: 1.15,
+            }}
+          >
+            Scratch to Reveal the Date
+          </h2>
+        )}
+        <p
+          style={{
+            fontFamily: 'Montserrat, sans-serif',
+            fontSize: 'clamp(0.95rem, 3vw, 1.15rem)',
+            color: 'rgba(155,17,30,0.85)',
+            marginBottom: 48,
+            letterSpacing: '0.05em',
+            fontWeight: 700,
+          }}
+        >
+          Each heart holds a secret — scratch all three to uncover your wedding date.
+        </p>
 
-      {/* Three scratch cards */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: 'clamp(20px, 5vw, 48px)',
-          flexWrap: 'wrap',
-          maxWidth: 600,
-          margin: '0 auto 48px',
-        }}
-      >
-        {DATE_PARTS.map((part) => (
-          <ScratchCard
-            key={part.id}
-            part={part}
-            revealed={revealed[part.id]}
-            onReveal={() => setRevealed((prev) => ({ ...prev, [part.id]: true }))}
-          />
-        ))}
-      </div>
+        {/* Three scratch cards */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 'clamp(20px, 5vw, 48px)',
+            flexWrap: 'wrap',
+            maxWidth: 600,
+            margin: '0 auto 48px',
+          }}
+        >
+          {DATE_PARTS.map((part) => (
+            <ScratchCard
+              key={part.id}
+              part={part}
+              revealed={revealed[part.id]}
+              onReveal={() => setRevealed((prev) => ({ ...prev, [part.id]: true }))}
+              onScratchStart={() => setHasStartedScratch(true)}
+            />
+          ))}
+        </div>
 
-      {/* Full date reveal after all three are scratched */}
-      <div
-        style={{
-          maxWidth: 480,
-          margin: '0 auto',
-          borderRadius: 20,
-          padding: '24px 32px',
-          minHeight: 160,
-          background: allRevealed ? 'rgba(192,21,42,0.06)' : 'transparent',
-          border: allRevealed ? '1px solid rgba(192,21,42,0.2)' : '1px solid transparent',
-          transition: 'background 0.6s ease, border 0.6s ease',
-        }}
-      >
-        {allRevealed ? (
-          <div style={{ animation: 'fadeInUp 0.7s ease forwards' }}>
-            <div
-              style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(1.3rem, 4vw, 2rem)',
-                fontWeight: 500,
-                color: '#8B1A30',
-                lineHeight: 1.3,
-              }}
-            >
-              Saturday · 14 February 2027
+        {/* Full date reveal after all three are scratched */}
+        <div
+          style={{
+            maxWidth: 480,
+            margin: '0 auto',
+            borderRadius: 20,
+            padding: '24px 32px',
+            minHeight: 160,
+            background: allRevealed ? 'rgba(192,21,42,0.06)' : 'transparent',
+            border: allRevealed ? '1px solid rgba(192,21,42,0.2)' : '1px solid transparent',
+            transition: 'background 0.6s ease, border 0.6s ease',
+          }}
+        >
+          {allRevealed ? (
+            <div style={{ animation: 'fadeInUp 0.7s ease forwards' }}>
+              <div
+                style={{
+                  fontFamily: 'Cormorant Garamond, serif',
+                  fontSize: 'clamp(1.3rem, 4vw, 2rem)',
+                  fontWeight: 500,
+                  color: '#8B1A30',
+                  lineHeight: 1.3,
+                }}
+              >
+                Saturday · 14 February 2027
+              </div>
+              <div
+                style={{
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.78rem',
+                  color: '#000',
+                  marginTop: 6,
+                  letterSpacing: '0.1em',
+                }}
+              >
+                The Rose Garden Estate · Udaipur, Rajasthan
+              </div>
+              <div
+                style={{
+                  fontFamily: 'Montserrat, sans-serif',
+                  fontSize: '0.72rem',
+                  color: '#000',
+                  marginTop: 10,
+                  letterSpacing: '0.05em',
+                }}
+              >
+                Scroll down to explore the full invitation ↓
+              </div>
             </div>
+          ) : (
             <div
               style={{
                 fontFamily: 'Montserrat, sans-serif',
                 fontSize: '0.78rem',
-                color: 'rgba(139,26,48,0.6)',
-                marginTop: 6,
-                letterSpacing: '0.1em',
+                color: 'rgba(139,26,48,0.4)',
+                letterSpacing: '0.08em',
               }}
             >
-              The Rose Garden Estate · Udaipur, Rajasthan
+              {Object.values(revealed).filter(Boolean).length} of 3 revealed...
             </div>
-            <div
-              style={{
-                fontFamily: 'Montserrat, sans-serif',
-                fontSize: '0.72rem',
-                color: 'rgba(139,26,48,0.45)',
-                marginTop: 10,
-                letterSpacing: '0.05em',
-              }}
-            >
-              Scroll down to explore the full invitation ↓
-            </div>
-          </div>
-        ) : (
-          <div
-            style={{
-              fontFamily: 'Montserrat, sans-serif',
-              fontSize: '0.78rem',
-              color: 'rgba(139,26,48,0.4)',
-              letterSpacing: '0.08em',
-            }}
-          >
-            {Object.values(revealed).filter(Boolean).length} of 3 revealed...
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
       </div>{/* end content wrapper */}
     </section>

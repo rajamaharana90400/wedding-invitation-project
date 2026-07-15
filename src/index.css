@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap');
 @import "tailwindcss";
 
 /* ─── Design Tokens ─────────────────────────────────────── */
@@ -148,16 +148,15 @@ body,
 .video-intro-names {
   position: absolute;
   bottom: 14%;
-  right: 8%;
-  left: auto;
-  text-align: right;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
   z-index: 3;
   animation: fadeInUp 1s ease 1.2s both;
 }
 
 @media (max-width: 640px) {
   .video-intro-names {
-    right: 6%;
     bottom: 10%;
   }
 

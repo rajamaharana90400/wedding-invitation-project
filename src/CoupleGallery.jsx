@@ -233,7 +233,8 @@ export default function CoupleGallery() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="section-label mb-4"
+          className="section-label mb-4 font-bold text-black"
+          style={{ color: '#000' }}
         >
           Memories Together
         </motion.div>

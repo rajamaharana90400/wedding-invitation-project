@@ -497,8 +497,8 @@ export default function WeddingEvents() {
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="section-label mb-4"
-            style={{ color: '#9A7A40' }}
+            className="section-label mb-4 font-bold text-black text-[1rem] md:text-[1.15rem]"
+            style={{ color: '#000' }}
           >
             Celebrations Await
           </motion.div>
