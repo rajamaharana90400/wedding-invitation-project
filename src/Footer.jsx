@@ -1,7 +1,12 @@
 import { useRef } from 'react';
-import details from '../details.json';
 import { motion, useInView } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
+
+const SOCIAL = [
+  { label: 'Instagram', icon: '📷', href: '#' },
+  { label: 'Facebook', icon: '📘', href: '#' },
+  { label: 'WhatsApp', icon: '💬', href: '#' },
+];
 
 function FloralDecor({ style, emoji = '🌸', delay = 0, duration = 5 }) {
   return (
@@ -102,10 +107,9 @@ export default function Footer() {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="section-label mb-6 font-bold text-black"
-          style={{ color: '#000' }}
+          className="section-label mb-6"
         >
-          {details.site.saveTheDateText}
+          February 14, 2027 · Udaipur, Rajasthan
         </motion.div>
 
         <motion.div
@@ -131,8 +135,137 @@ export default function Footer() {
           "Thank you for being part of our journey. Your presence at our wedding means the world to us.
           We look forward to celebrating this beautiful beginning with the ones we love most."
           <br /><br />
-          — With all our love, {details.couple.fullNames} 💛
+          — With all our love, Ananya &amp; Arjun 💛
         </motion.p>
+
+        {/* Social Icons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="flex justify-center gap-6 mb-10"
+        >
+          {/* Instagram */}
+          <motion.a
+            href="#"
+            aria-label="Instagram"
+            whileHover={{ scale: 1.15, y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex flex-col items-center gap-1.5"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(139,26,48,0.06)',
+                border: '1px solid rgba(139,26,48,0.2)',
+                color: '#8B1A30',
+                transition: 'all 0.3s',
+              }}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </div>
+            <span
+              className="text-[0.7rem] uppercase tracking-wider font-semibold"
+              style={{ color: '#8B1A30', fontFamily: 'Montserrat, sans-serif' }}
+            >
+              Instagram
+            </span>
+          </motion.a>
+
+          {/* Facebook */}
+          <motion.a
+            href="#"
+            aria-label="Facebook"
+            whileHover={{ scale: 1.15, y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex flex-col items-center gap-1.5"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(139,26,48,0.06)',
+                border: '1px solid rgba(139,26,48,0.2)',
+                color: '#8B1A30',
+                transition: 'all 0.3s',
+              }}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.14H6v4h3.5v12h5v-12h3.64l.63-4z"></path>
+              </svg>
+            </div>
+            <span
+              className="text-[0.7rem] uppercase tracking-wider font-semibold"
+              style={{ color: '#8B1A30', fontFamily: 'Montserrat, sans-serif' }}
+            >
+              Facebook
+            </span>
+          </motion.a>
+
+          {/* WhatsApp */}
+          <motion.a
+            href="#"
+            aria-label="WhatsApp"
+            whileHover={{ scale: 1.15, y: -4 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex flex-col items-center gap-1.5"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center"
+              style={{
+                background: 'rgba(139,26,48,0.06)',
+                border: '1px solid rgba(139,26,48,0.2)',
+                color: '#8B1A30',
+                transition: 'all 0.3s',
+              }}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.005 5.232 5.24 0 11.666 0c3.112.002 6.039 1.213 8.239 3.413 2.2 2.2 3.41 5.127 3.41 8.239 0 6.428-5.235 11.66-11.66 11.66-2.01-.002-3.99-.523-5.74-1.517L0 24zm6.402-3.896c1.616.96 3.2 1.47 4.887 1.47 5.164 0 9.36-4.197 9.36-9.36 0-5.163-4.195-9.36-9.36-9.36-5.165 0-9.36 4.197-9.36 9.36-.001 1.766.478 3.414 1.397 4.982L1.87 20.315l3.967-1.037.622.385z"></path>
+              </svg>
+            </div>
+            <span
+              className="text-[0.7rem] uppercase tracking-wider font-semibold"
+              style={{ color: '#8B1A30', fontFamily: 'Montserrat, sans-serif' }}
+            >
+              WhatsApp
+            </span>
+          </motion.a>
+        </motion.div>
+
+        {/* Navigation links */}
+        <motion.nav
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="flex flex-wrap justify-center gap-5 md:gap-7 mb-10"
+        >
+          {[
+            ['Events', '#events'],
+            ['Countdown', '#countdown'],
+            ['Venue', '#venue'],
+          ].map(([label, href]) => (
+            <a
+              key={label}
+              href={href}
+              className="text-[0.82rem] md:text-[0.92rem] tracking-wider font-semibold uppercase transition-colors duration-200"
+              style={{
+                color: 'rgba(139, 26, 48, 0.7)',
+                fontFamily: 'Montserrat, sans-serif',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => (e.target.style.color = '#8B1A30')}
+              onMouseLeave={(e) => (e.target.style.color = 'rgba(139, 26, 48, 0.7)')}
+            >
+              {label}
+            </a>
+          ))}
+        </motion.nav>
 
         {/* Bottom divider */}
         <div
@@ -153,7 +286,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              color: '#000',
+              color: '#8B1A30',
               textDecoration: 'underline',
               fontWeight: 600,
             }}

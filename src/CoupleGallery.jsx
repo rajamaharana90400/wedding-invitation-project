@@ -2,20 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import SectionDecorations from './SectionDecorations';
+import details from '../details.json';
 
-// Placeholder couple photos using picsum.photos (unique seeds for wedding aesthetic)
-const PHOTOS = [
-  { id: 1, src: 'gallery1.jpg', alt: 'Together', span: 'row-span-2' },
-  { id: 2, src: 'happymoment.jpg', alt: 'Happy moments', span: '' },
-  { id: 3, src: 'engagement.jpg', alt: 'Our story', span: '' },
-  { id: 4, src: 'love story.jpg', alt: 'The proposal', span: 'row-span-2' },
-  { id: 5, src: 'proposal.jpg', alt: 'Engagement', span: '' },
-  { id: 6, src: 'sindur.jpg', alt: 'Love story', span: '' },
-  { id: 7, src: 'celebration.jpg', alt: 'Golden hour', span: '' },
-  { id: 8, src: 'https://picsum.photos/seed/wed8/600/400', alt: 'Forever', span: '' },
-  { id: 9, src: 'celebration.jpg', alt: 'Celebration', span: '' },
-  { id: 10, src: 'https://picsum.photos/seed/wed10/600/400', alt: 'Together Forever', span: '' },
-];
+const PHOTOS = details.gallery.photos;
 
 function Lightbox({ photo, onClose }) {
   return createPortal(
